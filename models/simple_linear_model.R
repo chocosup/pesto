@@ -6,18 +6,18 @@ cat("Trying simple linear model...\n")
 
 trainModel <- function(X_, Y_)
 {
-  X1 = X_[,"mean_NB_PERSONNES_SCOLARISEES"]
-  X2 = X_[,"pourc_CHAUFFAGE_CENTRAL_INDIV"]
-  X3 = X_[,"nb_IRIS"]
-  X4 = X_[,"pourc_RESIDENCE_PRINCIPALE"]
-  X5 = X_[,"NON RENSEIGNE"]
+  X1 = X_[,"bleu domestique"]
+  X2 = X_[,"bleu artisans et commercants"]
+  #   X3 = X_[,"pourc_REFERENT_PERSONNE_AU_FOYER"]
+  #   X4 = X_[,"pourc_ASCENSEUR"]
+  #   X5 = X_[,"pourc_BATIMENT_2LOGEMENTS_ET_PLUS"]
   
-#  X5 = X_[,"jaune agricole"]
-#  X6 = X_[,"jaune bureaux-enseignement-sante"]
-#  X7 = X_[,"jaune commercants"]
-#  X8 = X_[,"jaune industrie"]
+  #  X5 = X_[,"jaune agricole"]
+  #  X6 = X_[,"jaune bureaux-enseignement-sante"]
+  #  X7 = X_[,"jaune commercants"]
+  #  X8 = X_[,"jaune industrie"]
   
-  fit = lm(Y_ ~ X1 + X2 + X3 + X4 + X5)
+  fit = lm(Y_ ~ X1 + X2)# + X3 + X4 + X5)
   return(fit)
 }
 
@@ -25,15 +25,11 @@ trainModel <- function(X_, Y_)
 
 predictModel <- function(x_, model)
 {
-  newdata=data.frame(X1=x_["pourc_CHAMBRE_HOTEL"],
-                     X2=x_["bleu agricole"],
-                     X3=x_["bleu domestique"],
-                     X4=x_["bleu equipement collectif"],
-                     X5=x_["jaune agricole"],
-                     X6=x_["jaune bureaux-enseignement-sante"],
-                     X7=x_["jaune commercants"],
-                     X8=x_["jaune industrie"],
-                     X9=x_["NON RENSEIGNE"])
+  newdata=data.frame(X1=x_["bleu domestique"],
+                     X2=x_["bleu artisans et commercants"])#,
+  #                      X3=x_["pourc_REFERENT_PERSONNE_AU_FOYER"],
+  #                      X4=x_["pourc_ASCENSEUR"],
+  #                      X5=x_["pourc_BATIMENT_2LOGEMENTS_ET_PLUS"])
   
   res = as.numeric(predict.lm(model,newdata))
   return(res)

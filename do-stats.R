@@ -33,7 +33,7 @@ Stats_conso$Variance.journaliere.moyenne=var_jour_moyen / moy_annuel
 
 #Stats_conso$Date.pic.annuel  = conso_peak_date
 Stats_conso$Heure.annee.du.pic.annuel = as.numeric(
-    as.POSIXct(conso_peak_date,origin="1970-01-01") -
+  as.POSIXct(conso_peak_date,origin="1970-01-01") -
     as.POSIXct(paste(year,"-01-01",sep="")),
   units="hours")
 
@@ -71,8 +71,8 @@ if(file.exists(INSEEFileName))
 }
 
 IndicateursINSEE=IndicateursINSEE[,
-    !names(IndicateursINSEE) %in% c("pourc_REFERENT_MOINS_14ANS")
-  ]
+                                  !names(IndicateursINSEE) %in% c("pourc_REFERENT_MOINS_14ANS")
+                                  ]
 
 
 
@@ -81,8 +81,11 @@ Y=as.matrix(Stats_conso$Moyenne.annuelle[1:length(HTA_names)])
 
 # TODO: remove redondant / useless columns
 X=cbind(as.matrix(IndicateursINSEE[-2][-1][1:length(HTA_names),]),
-        as.matrix(part_par_offre[-1][1:length(HTA_names),]))
-
+        as.matrix(part_par_offre[-1][1:length(HTA_names),]),
+        as.matrix(clients_par_offre[1:length(HTA_names),"Total"]),
+        as.matrix(conso_par_offre[1:length(HTA_names),"Total"]))
+colnames(X)[ncol(X)-1]="Clients"
+colnames(X)[ncol(X)]  ="Conso"
 
 # Compute correlation matrices and plot them in pdf files
 source("correlation.R")
