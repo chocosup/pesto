@@ -1,11 +1,10 @@
-source("init.R")
-
 load(file=paste(INSEEDataFolder,"Dep69_2012.RData"          ,sep=""))
+
 Recensement=logement_69
 remove(logement_69)
-
 Customers=client_pesto_final
 remove(client_pesto_final)
+
 Recensement <- Recensement[which(Recensement$COMMUNE %in% Customers$CODE_INSEE), ]
 Recensement <- Recensement[which(!is.na(Recensement$COMMUNE)), ]
 Recensement[,"IRIS_completed"]=array(NA,length(Recensement$IRIS))
