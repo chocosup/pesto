@@ -3,6 +3,7 @@
 
 cat("Trying simple linear model...\n")
 
+modelName <- "Simple linear model"
 
 trainModel <- function(X_, Y_)
 {

@@ -3,6 +3,9 @@
 nobs = nrow(X)
 mse <- 0
 
+actual    = array(NA, nobs)
+predicted = array(NA, nobs)
+
 pb <- txtProgressBar(min=0, max=nobs, style = 3)
 setTxtProgressBar(pb, 0)
 
@@ -11,14 +14,16 @@ for (i in 1:nobs){
   Ytemp <- Y[-i,]
   modeltemp <- trainModel(Xtemp,Ytemp)
   
-  actual    <- Y[i,]
-  predicted <- predictModel(X[i,],modeltemp)
-  mse <- mse + (actual - predicted)^2
+  actual[i]    <- Y[i,]
+  predicted[i] <- predictModel(X[i,],modeltemp)
+  mse <- mse + (actual[i] - predicted[i])^2
   
   setTxtProgressBar(pb, i)
 }
 mse <- mse / nobs
 rmse <- sqrt(mse)
 
-cat("Validation croisee: ", rmse, "\n")
+plot(actual, predicted, main=modelName)
+
+cat("\nValidation croisee: ", rmse, "\n")
 

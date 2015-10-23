@@ -3,6 +3,8 @@
 
 cat("Trying LARS model...\n")
 
+modelName <- "LARS model"
+
 
 trainModel <- function(X_, Y_)
 {
