@@ -5,6 +5,13 @@ data/*
 output
 output/*
 
+.RData
 */.RData
+
+.Rhistory
 */.Rhistory
+
+.DS_Store
+*/.DS_Store
+
 
