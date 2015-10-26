@@ -29,8 +29,9 @@ for (k in 1:length(indices)){
   
   setTxtProgressBar(pb, k)
 }
-mse <- mse / nobs
+mse <- mse / length(indices)
 rmse <- sqrt(mse)
+
 
 plot(actual, predicted, main=modelName)
 
