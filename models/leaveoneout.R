@@ -1,15 +1,24 @@
 
 # Calcul de la validation croisee
-nobs = nrow(X)
 mse <- 0
 
 actual    = array(NA, nobs)
 predicted = array(NA, nobs)
 
-pb <- txtProgressBar(min=0, max=nobs, style = 3)
+
+if (sampleSize >= nobs || sampleSize <= 0) {
+  indices=1:nobs
+} else {
+  indices=shuffle(nobs)[1:sampleSize]
+}
+
+
+pb <- txtProgressBar(min=0, max=length(indices), style = 3)
 setTxtProgressBar(pb, 0)
 
-for (i in 1:nobs){
+
+for (k in 1:length(indices)){
+  i=indices[k]
   Xtemp <- X[-i,]
   Ytemp <- Y[-i,]
   modeltemp <- trainModel(Xtemp,Ytemp)
@@ -18,7 +27,7 @@ for (i in 1:nobs){
   predicted[i] <- predictModel(X[i,],modeltemp)
   mse <- mse + (actual[i] - predicted[i])^2
   
-  setTxtProgressBar(pb, i)
+  setTxtProgressBar(pb, k)
 }
 mse <- mse / nobs
 rmse <- sqrt(mse)
