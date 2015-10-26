@@ -1,4 +1,6 @@
 
+nobs = nrow(X)
+sampleSize = nobs
 
 
 source(paste0(ModelSourceFolder,"simple_linear_model.R"))

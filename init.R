@@ -26,6 +26,7 @@ library(Rcpp)
 library(stringr)
 require(sp)
 library(stringi)
+library(permute)
 
 Sys.setenv(TZ='UTC')
 
