@@ -14,8 +14,8 @@ sampleSize = nobs
 
 
 
-nbAlgos=3
-nbVariables=3
+nbAlgos = 4
+nbVariables = 3
 
 resultsLeaveOneOut = matrix(NA,nbAlgos,nbVariables)
 rownames(resultsLeaveOneOut) <- array(NA,nbAlgos)
@@ -48,6 +48,12 @@ modelName = paste0(modelName, " for ", modelized_quantity)
 source(paste0(ModelSourceFolder,"leaveoneout.R"))
 resultsLeaveOneOut[3,1] = rmse
 
+source(paste0(ModelSourceFolder,"random_forest_model.R"))
+rownames(resultsLeaveOneOut)[4] = modelName
+modelName = paste0(modelName, " for ", modelized_quantity)
+source(paste0(ModelSourceFolder,"leaveoneout.R"))
+resultsLeaveOneOut[4,1] = rmse
+
 
 
 cat("\n-----------------------\n")
@@ -70,6 +76,11 @@ source(paste0(ModelSourceFolder,"NN_model.R"))
 modelName = paste0(modelName, " for ", modelized_quantity)
 source(paste0(ModelSourceFolder,"leaveoneout.R"))
 resultsLeaveOneOut[3,2] = rmse
+
+source(paste0(ModelSourceFolder,"random_forest_model.R"))
+modelName = paste0(modelName, " for ", modelized_quantity)
+source(paste0(ModelSourceFolder,"leaveoneout.R"))
+resultsLeaveOneOut[4,2] = rmse
 
 
 
@@ -94,3 +105,7 @@ modelName = paste0(modelName, " for ", modelized_quantity)
 source(paste0(ModelSourceFolder,"leaveoneout.R"))
 resultsLeaveOneOut[3,3] = rmse
 
+source(paste0(ModelSourceFolder,"random_forest_model.R"))
+modelName = paste0(modelName, " for ", modelized_quantity)
+source(paste0(ModelSourceFolder,"leaveoneout.R"))
+resultsLeaveOneOut[4,2] = rmse
