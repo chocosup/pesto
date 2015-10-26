@@ -2,6 +2,10 @@
 # Very simple linear model using only a few variables from X
 
 cat("Trying NN model...\n")
+
+modelName <- "NN model"
+
+
 library(neuralnet)
 
 trainModel <- function(X_, Y_)
