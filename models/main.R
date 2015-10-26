@@ -27,20 +27,24 @@ colnames(resultsLeaveOneOut) <- c("Moyenne annuelle",
 cat("\n-----------------------\n")
 cat("   Moyenne annuelle\n")
 cat("-----------------------\n")
+modelized_quantity = "annual mean"
 Y=as.matrix(Stats_conso$Moyenne.annuelle[1:length(HTA_names)])
 
 source(paste0(ModelSourceFolder,"simple_linear_model.R"))
 rownames(resultsLeaveOneOut)[1] = modelName
+modelName = paste0(modelName, " for ", modelized_quantity)
 source(paste0(ModelSourceFolder,"leaveoneout.R"))
 resultsLeaveOneOut[1,1] = rmse
 
 source(paste0(ModelSourceFolder,"lars_model.R"))
 rownames(resultsLeaveOneOut)[2] = modelName
+modelName = paste0(modelName, " for ", modelized_quantity)
 source(paste0(ModelSourceFolder,"leaveoneout.R"))
 resultsLeaveOneOut[2,1] = rmse
 
 source(paste0(ModelSourceFolder,"NN_model.R"))
 rownames(resultsLeaveOneOut)[3] = modelName
+modelName = paste0(modelName, " for ", modelized_quantity)
 source(paste0(ModelSourceFolder,"leaveoneout.R"))
 resultsLeaveOneOut[3,1] = rmse
 
@@ -49,17 +53,21 @@ resultsLeaveOneOut[3,1] = rmse
 cat("\n-----------------------\n")
 cat("   Variance annuelle\n")
 cat("-----------------------\n")
+modelized_quantity = "annual variance"
 Y=as.matrix(Stats_conso$Variance.annuelle[1:length(HTA_names)])
 
 source(paste0(ModelSourceFolder,"simple_linear_model.R"))
+modelName = paste0(modelName, " for ", modelized_quantity)
 source(paste0(ModelSourceFolder,"leaveoneout.R"))
 resultsLeaveOneOut[1,2] = rmse
 
 source(paste0(ModelSourceFolder,"lars_model.R"))
+modelName = paste0(modelName, " for ", modelized_quantity)
 source(paste0(ModelSourceFolder,"leaveoneout.R"))
 resultsLeaveOneOut[2,2] = rmse
 
 source(paste0(ModelSourceFolder,"NN_model.R"))
+modelName = paste0(modelName, " for ", modelized_quantity)
 source(paste0(ModelSourceFolder,"leaveoneout.R"))
 resultsLeaveOneOut[3,2] = rmse
 
@@ -68,17 +76,21 @@ resultsLeaveOneOut[3,2] = rmse
 cat("\n-----------------------\n")
 cat("   Heure pic annuel\n")
 cat("-----------------------\n")
+modelized_quantity = "annual peak hour"
 Y=as.matrix(Stats_conso$Heure.annee.du.pic.annuel[1:length(HTA_names)])
 
 source(paste0(ModelSourceFolder,"simple_linear_model.R"))
+modelName = paste0(modelName, " for ", modelized_quantity)
 source(paste0(ModelSourceFolder,"leaveoneout.R"))
 resultsLeaveOneOut[1,3] = rmse
 
 source(paste0(ModelSourceFolder,"lars_model.R"))
+modelName = paste0(modelName, " for ", modelized_quantity)
 source(paste0(ModelSourceFolder,"leaveoneout.R"))
 resultsLeaveOneOut[2,3] = rmse
 
 source(paste0(ModelSourceFolder,"NN_model.R"))
+modelName = paste0(modelName, " for ", modelized_quantity)
 source(paste0(ModelSourceFolder,"leaveoneout.R"))
 resultsLeaveOneOut[3,3] = rmse
 
