@@ -4,6 +4,8 @@
 cat("Trying NN model...\n")
 library(neuralnet)
 
+modelName <- "NN model"
+
 trainModel <- function(X_, Y_)
 {
   Xtemp <- X
