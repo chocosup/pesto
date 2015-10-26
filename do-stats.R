@@ -74,21 +74,10 @@ IndicateursINSEE=IndicateursINSEE[,
                                   !names(IndicateursINSEE) %in% c("pourc_REFERENT_MOINS_14ANS")
                                   ]
 
-
-
-# Change this line to compute modes for different Y
-Y=as.matrix(Stats_conso$Moyenne.annuelle[1:length(HTA_names)])
-
-# TODO: remove redondant / useless columns
-X=cbind(as.matrix(IndicateursINSEE[-2][-1][1:length(HTA_names),]),
-        as.matrix(part_par_offre[-1][1:length(HTA_names),]),
-        as.matrix(clients_par_offre[1:length(HTA_names),"Total"]),
-        as.matrix(conso_par_offre[1:length(HTA_names),"Total"]))
-colnames(X)[ncol(X)-1]="Clients"
-colnames(X)[ncol(X)]  ="Conso"
-
 # Compute correlation matrices and plot them in pdf files
 source("correlation.R")
+
+
 
 # Do cross validation on several models
 source(paste0(ModelSourceFolder,"main.R"))
