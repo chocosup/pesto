@@ -1,10 +1,6 @@
 
 # Very simple linear model using only a few variables from X
 
-cat("Trying simple linear model...\n")
-
-modelName <- "Simple linear model"
-
 trainModel <- function(X_, Y_)
 {
   X1 = X_[,"bleu domestique"]

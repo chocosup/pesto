@@ -1,10 +1,5 @@
 # Basic random forest model
 
-cat("Trying random forest model...\n")
-
-modelName <- "Random Forest"
-
-
 library(randomForest)
 
 

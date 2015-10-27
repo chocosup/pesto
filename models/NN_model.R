@@ -1,11 +1,4 @@
 
-# Very simple linear model using only a few variables from X
-
-cat("Trying NN model...\n")
-
-modelName <- "NN model"
-
-
 library(neuralnet)
 
 modelName <- "NN model"

@@ -1,23 +1,23 @@
 
-# Calcul de la validation croisee
-mse <- 0
-
-actual    = array(NA, nobs)
-predicted = array(NA, nobs)
-
-
 if (sampleSize >= nobs || sampleSize <= 0) {
   indices=1:nobs
+  sampleSize=nobs
 } else {
   indices=shuffle(nobs)[1:sampleSize]
 }
 
+actual    = array(NA, sampleSize)
+predicted = array(NA, sampleSize)
 
-pb <- txtProgressBar(min=0, max=length(indices), style = 3)
+
+pb <- txtProgressBar(min=0, max=sampleSize, style = 3)
 setTxtProgressBar(pb, 0)
 
 
-for (k in 1:length(indices)){
+# Calcul de la validation croisee
+mse <- 0
+
+for (k in 1:sampleSize){
   i=indices[k]
   Xtemp <- X[-i,]
   Ytemp <- Y[-i,]
@@ -29,7 +29,7 @@ for (k in 1:length(indices)){
   
   setTxtProgressBar(pb, k)
 }
-mse <- mse / length(indices)
+mse <- mse / sampleSize
 rmse <- sqrt(mse)
 
 

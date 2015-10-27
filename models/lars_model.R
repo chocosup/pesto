@@ -1,11 +1,6 @@
 
 # Very simple linear model using only a few variables from X
 
-cat("Trying LARS model...\n")
-
-modelName <- "LARS model"
-
-
 trainModel <- function(X_, Y_)
 {
   
