@@ -1,6 +1,18 @@
+# TODO: remove redondant / useless columns
+X=cbind(as.matrix(IndicateursINSEE[-2][-1][1:length(HTA_names),]),
+        as.matrix(part_par_offre[-1][1:length(HTA_names),]),
+        as.matrix(clients_par_offre[1:length(HTA_names),"Total"]),
+        as.matrix(conso_par_offre[1:length(HTA_names),"Total"]))
+colnames(X)[ncol(X)-1]="Clients"
+colnames(X)[ncol(X)]  ="Conso"
 
 nobs = nrow(X)
-sampleSize = 10
+
+#----------------------------------
+#    Change below to configure
+#----------------------------------
+
+sampleSize = nobs
 
 runAlgo=data.frame(
   Simple.linear=FALSE,
@@ -15,8 +27,7 @@ runVar=data.frame(
   Heure.annee.du.pic.annuel=FALSE
 )
 
-
-
+#----------------------------------
 
 
 algoNames=names(runAlgo)[which(runAlgo==TRUE)]
@@ -28,18 +39,6 @@ nbVariables=length(varNames)
 resultsLeaveOneOut = matrix(NA,nbAlgos,nbVariables)
 rownames(resultsLeaveOneOut) <- algoNames
 colnames(resultsLeaveOneOut) <- varNames
-
-
-
-
-# TODO: remove redondant / useless columns
-X=cbind(as.matrix(IndicateursINSEE[-2][-1][1:length(HTA_names),]),
-        as.matrix(part_par_offre[-1][1:length(HTA_names),]),
-        as.matrix(clients_par_offre[1:length(HTA_names),"Total"]),
-        as.matrix(conso_par_offre[1:length(HTA_names),"Total"]))
-colnames(X)[ncol(X)-1]="Clients"
-colnames(X)[ncol(X)]  ="Conso"
-
 
 
 
