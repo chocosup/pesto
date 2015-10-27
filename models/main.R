@@ -24,7 +24,10 @@ runAlgo=data.frame(
 runVar=data.frame(
   Moyenne.annuelle=TRUE,
   Variance.annuelle=TRUE,
-  Heure.annee.du.pic.annuel=TRUE
+  Pic.annuel=TRUE,
+  Pic.journalier.moyen=TRUE,
+  Heure.annee.du.pic.annuel=TRUE,
+  thermo_A=TRUE
 )
 
 #----------------------------------
@@ -51,6 +54,8 @@ for (variableName in varNames)
   
   Y=as.matrix(Stats_conso[,variableName][1:length(HTA_names)])
   
+  pdf(paste0(StatsOutFolder,"models_",variableName,"_",year,".pdf"))
+  
   
   for (algoName in algoNames)
   {
@@ -70,5 +75,7 @@ for (variableName in varNames)
     source(paste0(ModelSourceFolder,"leaveoneout.R"))
     resultsLeaveOneOut[algoName,variableName] = rmse
   }
+  
+  dev.off()
 }
 
