@@ -21,7 +21,7 @@ resultsLeaveOneOut = matrix(NA,nbAlgos,nbVariables)
 rownames(resultsLeaveOneOut) <- array(NA,nbAlgos)
 colnames(resultsLeaveOneOut) <- c("Moyenne annuelle",
                                   "Variance annuelle",
-                                 "Heure pic annuel")
+                                  "Heure pic annuel")
 
 
 cat("\n-----------------------\n")
