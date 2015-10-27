@@ -18,16 +18,17 @@ runAlgo=data.frame(
   Simple.linear=FALSE,
   LARS=FALSE,
   Random.Forest=FALSE,
-  NN=TRUE
+  NN=FALSE,
+  gunnar=TRUE
 )
 
 runVar=data.frame(
   Moyenne.annuelle=TRUE,
-  Variance.annuelle=TRUE,
+  Variance.annuelle=FALSE,
   Pic.annuel=FALSE,
   Pic.journalier.moyen=FALSE,
   Heure.annee.du.pic.annuel=FALSE,
-  thermo_A=TRUE
+  thermo_A=FALSE
 )
 
 #----------------------------------
@@ -70,6 +71,8 @@ for (variableName in varNames)
       source(paste0(ModelSourceFolder,"NN_model.R"))
     } else if (algoName == "Random.Forest") {
       source(paste0(ModelSourceFolder,"random_forest_model.R"))
+    } else if (algoName == "Gunnar") {
+      source(paste0(ModelSourceFolder,"gunnar.R"))
     }
     
     source(paste0(ModelSourceFolder,"leaveoneout.R"))
