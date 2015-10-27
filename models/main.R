@@ -3,16 +3,16 @@ nobs = nrow(X)
 sampleSize = 10
 
 runAlgo=data.frame(
-  Simple.linear=TRUE,
-  LARS=TRUE,
-  Random.Forest=TRUE,
+  Simple.linear=FALSE,
+  LARS=FALSE,
+  Random.Forest=FALSE,
   NN=TRUE
 )
 
 runVar=data.frame(
   Moyenne.annuelle=TRUE,
-  Variance.annuelle=TRUE,
-  Heure.annee.du.pic.annuel=TRUE
+  Variance.annuelle=FALSE,
+  Heure.annee.du.pic.annuel=FALSE
 )
 
 
