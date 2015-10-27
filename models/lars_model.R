@@ -8,7 +8,7 @@ trainModel <- function(X_, Y_)
   
   nb_steps=nrow(obj$beta)
   
-  coefs = obj$beta[nb_steps,]
+  coefs = obj$beta[11,]
   aux=obj$normx * coefs
   
   aux=sort(abs(aux),decreasing=TRUE)
@@ -39,7 +39,6 @@ trainModel <- function(X_, Y_)
 
 predictModel <- function(x_, model)
 {
-  
   newdata=data.frame(X1 =x_[model[[2]][1]],
                      X2 =x_[model[[2]][2]],
                      X3 =x_[model[[2]][3]],

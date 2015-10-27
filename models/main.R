@@ -24,9 +24,9 @@ runAlgo=data.frame(
 runVar=data.frame(
   Moyenne.annuelle=TRUE,
   Variance.annuelle=TRUE,
-  Pic.annuel=TRUE,
-  Pic.journalier.moyen=TRUE,
-  Heure.annee.du.pic.annuel=TRUE,
+  Pic.annuel=FALSE,
+  Pic.journalier.moyen=FALSE,
+  Heure.annee.du.pic.annuel=FALSE,
   thermo_A=TRUE
 )
 
