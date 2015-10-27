@@ -23,8 +23,11 @@ runAlgo=data.frame(
 
 runVar=data.frame(
   Moyenne.annuelle=TRUE,
-  Variance.annuelle=FALSE,
-  Heure.annee.du.pic.annuel=FALSE
+  Variance.annuelle=TRUE,
+  Pic.annuel=FALSE,
+  Pic.journalier.moyen=FALSE,
+  Heure.annee.du.pic.annuel=FALSE,
+  thermo_A=TRUE
 )
 
 #----------------------------------
@@ -51,10 +54,14 @@ for (variableName in varNames)
   
   Y=as.matrix(Stats_conso[,variableName][1:length(HTA_names)])
   
+  pdf(paste0(StatsOutFolder,"models_",variableName,"_",year,".pdf"))
+  
   
   for (algoName in algoNames)
   {
-    cat("Doing: ",algoName," model...\n")
+    modelName = paste0(algoName, " model for ", variableName)
+    cat("Doing: ",modelName,"\n")
+    
     if (algoName == "Simple.linear") {
       source(paste0(ModelSourceFolder,"simple_linear_model.R"))
     } else if (algoName == "LARS") {
@@ -65,9 +72,10 @@ for (variableName in varNames)
       source(paste0(ModelSourceFolder,"random_forest_model.R"))
     }
     
-    modelName = paste0(modelName, " for ", variableName)
     source(paste0(ModelSourceFolder,"leaveoneout.R"))
     resultsLeaveOneOut[algoName,variableName] = rmse
   }
+  
+  dev.off()
 }
 
