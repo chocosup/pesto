@@ -5,6 +5,7 @@ X=cbind(as.matrix(IndicateursINSEE[-2][-1][1:length(HTA_names),]),
         as.matrix(conso_par_offre[1:length(HTA_names),"Total"]))
 colnames(X)[ncol(X)-1]="Clients"
 colnames(X)[ncol(X)]  ="Conso"
+# X = X[,- which(colnames(X) == "NON RENSEIGNE")]
 
 nobs = nrow(X)
 
@@ -23,7 +24,7 @@ runAlgo=data.frame(
 
 runVar=data.frame(
   Moyenne.annuelle=TRUE,
-  Variance.annuelle=TRUE,
+  Variance.annuelle=FALSE,
   Pic.annuel=FALSE,
   Pic.journalier.moyen=FALSE,
   Heure.annee.du.pic.annuel=FALSE,
@@ -78,4 +79,5 @@ for (variableName in varNames)
   
   dev.off()
 }
+
 
