@@ -8,17 +8,7 @@ colnames(X)[ncol(X)]  ="Conso"
 
 nobs = nrow(X)
 
-
-sampleSize = 10
-
-runAlgo=data.frame(
-  Simple.linear=FALSE,
-  LARS=FALSE,
-  Random.Forest=FALSE,
-  NN=FALSE,
-  gunnar=TRUE
-)
-
+source(paste0(ModelSourceFolder,"config.R"))
 
 algoFiles=data.frame(
   Simple.linear = "simple_linear_model.R",
