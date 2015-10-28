@@ -71,7 +71,7 @@ for (variableName in varNames)
       source(paste0(ModelSourceFolder,"NN_model.R"))
     } else if (algoName == "Random.Forest") {
       source(paste0(ModelSourceFolder,"random_forest_model.R"))
-    } else if (algoName == "Gunnar") {
+    } else if (algoName == "gunnar") {
       source(paste0(ModelSourceFolder,"gunnar.R"))
     }
     
