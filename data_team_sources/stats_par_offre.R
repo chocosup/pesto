@@ -57,8 +57,8 @@ conso_par_offre[, "Total"] = rowSums(conso_par_offre[, offres])
 
 rm(temp)
 
-moy_par_offre = conso_par_offre[, -ncol(conso_par_offre)]
-part_par_offre = conso_par_offre[, -ncol(conso_par_offre)]
+moy_par_offre = conso_par_offre[, -c(ncol(conso_par_offre), ncol(conso_par_offre) -1)]
+part_par_offre = conso_par_offre[, -c(ncol(conso_par_offre), ncol(conso_par_offre) -1)]
 
 for(i in offres[-length(offres)])
 {

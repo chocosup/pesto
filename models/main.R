@@ -19,7 +19,8 @@ runAlgo=data.frame(
   LARS=TRUE,
   Simple.LARS=TRUE,
   Random.Forest=FALSE,
-  NN=FALSE
+  NN=FALSE,
+  gunnar=TRUE
 )
 
 runVar=data.frame(
@@ -73,6 +74,8 @@ for (variableName in varNames)
       source(paste0(ModelSourceFolder,"NN_model.R"))
     } else if (algoName == "Random.Forest") {
       source(paste0(ModelSourceFolder,"random_forest_model.R"))
+    } else if (algoName == "gunnar") {
+      source(paste0(ModelSourceFolder,"gunnar.R"))
     }
     
     source(paste0(ModelSourceFolder,"leaveoneout.R"))
