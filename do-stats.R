@@ -23,13 +23,13 @@ Stats_conso=data.frame(HTA=All_names)
 source(paste0(StatsSourceFolder,"do-yearstats.R"))
 
 Stats_conso$Moyenne.annuelle = moy_annuel
-Stats_conso$Variance.annuelle= var_annuel / moy_annuel
-Stats_conso$Pic.annuel       = conso_peak_an / moy_annuel
-Stats_conso$Pic.journalier.moyen  =peak_jour_moyen  / moy_annuel
-Stats_conso$Creux.journalier.moyen=nadir_jour_moyen / moy_annuel
-Stats_conso$Ecart.journalier.moyen=delta_jour_moyen / moy_annuel
-Stats_conso$Ecart.Moyenne.Pic.journalier.moyen=delta_mean_peak / moy_annuel
-Stats_conso$Variance.journaliere.moyenne=var_jour_moyen / moy_annuel
+Stats_conso$Variance.annuelle                 = 100 * var_annuel       / moy_annuel / moy_annuel
+Stats_conso$Pic.annuel                        = 100 * conso_peak_an    / moy_annuel
+Stats_conso$Pic.journalier.moyen              = 100 * peak_jour_moyen  / moy_annuel
+Stats_conso$Creux.journalier.moyen            = 100 * nadir_jour_moyen / moy_annuel
+Stats_conso$Ecart.journalier.moyen            = 100 * delta_jour_moyen / moy_annuel
+Stats_conso$Ecart.Moyenne.Pic.journalier.moyen= 100 * delta_mean_peak  / moy_annuel
+Stats_conso$Variance.journaliere.moyenne      = 100 * var_jour_moyen   / moy_annuel
 
 #Stats_conso$Date.pic.annuel  = conso_peak_date
 Stats_conso$Heure.annee.du.pic.annuel = as.numeric(
@@ -42,10 +42,10 @@ Stats_conso$Heure.annee.du.pic.annuel = as.numeric(
 # Fills Stats_conso with thermosensibility statistics
 source(paste0(StatsSourceFolder,"do-thermosens.R"))
 
-Stats_conso$thermo_A      =thermo_A / moy_annuel
-#Stats_conso$thermo_B      =thermo_B / moy_annuel
-#Stats_conso$thermo_Erreur =thermo_Erreur
-#Stats_conso$thermo_RSquare=thermo_RSquare
+Stats_conso$thermo_A      = 100 * thermo_A / moy_annuel
+#Stats_conso$thermo_B      = 100 * thermo_B / moy_annuel
+#Stats_conso$thermo_Erreur = thermo_Erreur
+#Stats_conso$thermo_RSquare= thermo_RSquare
 
 
 # Save statistics in a readable format

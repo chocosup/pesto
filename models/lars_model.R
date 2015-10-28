@@ -3,7 +3,6 @@
 
 trainModel <- function(X_, Y_)
 {
-  
   obj=lars(X_,Y_)
   
   nb_steps=nrow(obj$beta)
@@ -53,3 +52,7 @@ predictModel <- function(x_, model)
   res = as.numeric(predict.lm(model[[1]],newdata))
   return(res)
 }
+
+
+
+

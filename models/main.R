@@ -8,9 +8,6 @@ colnames(X)[ncol(X)]  ="Conso"
 
 nobs = nrow(X)
 
-#----------------------------------
-#    Change below to configure
-#----------------------------------
 
 sampleSize = 10
 
@@ -22,16 +19,16 @@ runAlgo=data.frame(
   gunnar=TRUE
 )
 
-runVar=data.frame(
-  Moyenne.annuelle=TRUE,
-  Variance.annuelle=FALSE,
-  Pic.annuel=FALSE,
-  Pic.journalier.moyen=FALSE,
-  Heure.annee.du.pic.annuel=FALSE,
-  thermo_A=FALSE
+
+algoFiles=data.frame(
+  Simple.linear = "simple_linear_model.R",
+  LARS          = "lars_model.R",
+  Simple.LARS   = "simple_lars_model.R",
+  Random.Forest = "random_forest_model.R",
+  NN            = "NN_model.R",
+  gunnar        = "gunnar.R"
 )
 
-#----------------------------------
 
 
 algoNames=names(runAlgo)[which(runAlgo==TRUE)]
@@ -43,7 +40,6 @@ nbVariables=length(varNames)
 resultsLeaveOneOut = matrix(NA,nbAlgos,nbVariables)
 rownames(resultsLeaveOneOut) <- algoNames
 colnames(resultsLeaveOneOut) <- varNames
-
 
 
 
@@ -63,22 +59,14 @@ for (variableName in varNames)
     modelName = paste0(algoName, " model for ", variableName)
     cat("Doing: ",modelName,"\n")
     
-    if (algoName == "Simple.linear") {
-      source(paste0(ModelSourceFolder,"simple_linear_model.R"))
-    } else if (algoName == "LARS") {
-      source(paste0(ModelSourceFolder,"lars_model.R"))
-    } else if (algoName == "NN") {
-      source(paste0(ModelSourceFolder,"NN_model.R"))
-    } else if (algoName == "Random.Forest") {
-      source(paste0(ModelSourceFolder,"random_forest_model.R"))
-    } else if (algoName == "gunnar") {
-      source(paste0(ModelSourceFolder,"gunnar.R"))
-    }
-    
+    source(paste0(ModelSourceFolder,as.character(algoFiles[[algoName]])))
     source(paste0(ModelSourceFolder,"leaveoneout.R"))
+    
     resultsLeaveOneOut[algoName,variableName] = rmse
   }
   
-  dev.off()
+  while (as.numeric(dev.cur()) > 1) {
+    dev.off()
+  }
 }
 
