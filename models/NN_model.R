@@ -5,8 +5,8 @@ modelName <- "NN model"
 
 trainModel <- function(X_, Y_)
 {
-  Xtemp <- X
-  Ytemp <- Y
+  Xtemp <- X_
+  Ytemp <- as.data.frame(Y_)
   colnames(Ytemp)<-c("Y")
   
   data=cbind(Xtemp, Ytemp)
@@ -30,7 +30,7 @@ trainModel <- function(X_, Y_)
   f <- as.formula(paste('Y ~', paste(n[!n %in% 'Y'], collapse = ' + ')))
   
   # mynet <- neuralnet(f, data, hidden = c(10,10,7,5,3,1), threshold = 0.01)
-  mynet <- neuralnet(f, data, hidden = c(30,25,20,15,10,5,1), threshold = 0.01)
+  # mynet <- neuralnet(f, data, hidden = c(30,25,20,15,10,5,1), threshold = 0.01)
   
   return(list(mynet, mins, maxs, a, b))
 }

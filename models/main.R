@@ -12,11 +12,11 @@ nobs = nrow(X)
 #    Change below to configure
 #----------------------------------
 
-sampleSize = nobs
+sampleSize = 10
 
 runAlgo=data.frame(
-  Simple.linear=FALSE,
-  LARS=FALSE,
+  Simple.linear=TRUE,
+  LARS=TRUE,
   Random.Forest=FALSE,
   NN=FALSE,
   gunnar=TRUE

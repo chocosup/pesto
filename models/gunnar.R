@@ -5,12 +5,12 @@ modelName <- "Gunnar"
 
 trainModel <- function(X_, Y_)
 {
-  pca=prcomp(X, scale. = TRUE, center=TRUE)
+  pca=prcomp(X_, scale. = TRUE, center=TRUE)
   Xtemp <- as.data.frame(sweep(pca$x,2,pca$sdev,"/"))
   nv=last(which((cumsum(pca$sdev)/sum(pca$sdev))<0.9))
   Xtemp=Xtemp[,1:nv]
   
-  Ytemp <- Y
+  Ytemp <- as.data.frame(Y_)
   colnames(Ytemp)<-c("Y")
   a=(max(Ytemp)-min(Ytemp))
   b=min(Ytemp)
@@ -26,8 +26,7 @@ trainModel <- function(X_, Y_)
   
   f <- as.formula(paste('Y ~', paste(n[!n %in% 'Y'], collapse = ' + ')))
   
-  # mynet <- neuralnet(f, data, hidden = c(10,10,7,5,3,1), threshold = 0.01)
-  mynet <- neuralnet(f, data, hidden = c(30,25,20,15,10,5,1), threshold = 0.01)
+  mynet <- neuralnet(f, data, hidden = c(30,25,20,25,20,15,20,15,10,15,10,5,3,1), threshold = 0.01)
   
   return(list(mynet, a, b, pca, nv))
 }
