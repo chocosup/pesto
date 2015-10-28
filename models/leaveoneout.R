@@ -25,6 +25,7 @@ for (k in 1:sampleSize){
   
   actual[i]    <- Y[i,]
   predicted[i] <- predictModel(X[i,],modeltemp)
+  
   mse <- mse + (actual[i] - predicted[i])^2
   
   setTxtProgressBar(pb, k)

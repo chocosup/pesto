@@ -17,17 +17,18 @@ sampleSize = nobs
 runAlgo=data.frame(
   Simple.linear=TRUE,
   LARS=TRUE,
-  Random.Forest=TRUE,
-  NN=TRUE
+  Simple.LARS=TRUE,
+  Random.Forest=FALSE,
+  NN=FALSE
 )
 
 runVar=data.frame(
   Moyenne.annuelle=TRUE,
   Variance.annuelle=TRUE,
+  thermo_A=TRUE,
   Pic.annuel=FALSE,
   Pic.journalier.moyen=FALSE,
-  Heure.annee.du.pic.annuel=FALSE,
-  thermo_A=TRUE
+  Heure.annee.du.pic.annuel=FALSE
 )
 
 #----------------------------------
@@ -66,6 +67,8 @@ for (variableName in varNames)
       source(paste0(ModelSourceFolder,"simple_linear_model.R"))
     } else if (algoName == "LARS") {
       source(paste0(ModelSourceFolder,"lars_model.R"))
+    } else if (algoName == "Simple.LARS") {
+      source(paste0(ModelSourceFolder,"simple_lars_model.R"))
     } else if (algoName == "NN") {
       source(paste0(ModelSourceFolder,"NN_model.R"))
     } else if (algoName == "Random.Forest") {
@@ -76,6 +79,8 @@ for (variableName in varNames)
     resultsLeaveOneOut[algoName,variableName] = rmse
   }
   
-  dev.off()
+  while (as.numeric(dev.cur()) > 1) {
+    dev.off()
+  }
 }
 
