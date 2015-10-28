@@ -3,8 +3,11 @@ if (sampleSize >= nobs || sampleSize <= 0) {
   indices=1:nobs
   sampleSize=nobs
 } else {
-  # indices=shuffle(nobs)[1:sampleSize]
-  indices=1:sampleSize
+  if (shuffleSample) {
+    indices=shuffle(nobs)[1:sampleSize]
+  } else {
+    indices=1:sampleSize
+  }
 }
 
 actual    = array(NA, sampleSize)
