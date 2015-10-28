@@ -12,8 +12,8 @@ nobs = nrow(X)
 sampleSize = 10
 
 runAlgo=data.frame(
-  Simple.linear=TRUE,
-  LARS=TRUE,
+  Simple.linear=FALSE,
+  LARS=FALSE,
   Random.Forest=FALSE,
   NN=FALSE,
   gunnar=TRUE
