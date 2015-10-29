@@ -38,7 +38,10 @@ mse <- mse / sampleSize
 rmse <- sqrt(mse)
 
 
-plot(actual, predicted, main=modelName)
+plot(actual, predicted, asp=1,
+     main=modelName,
+     sub=paste("Mean: ", mean(Y), "    -    RMSE: ", rmse))
+abline(0,1)
 
 cat("\nValidation croisee: ", rmse, "\n")
 

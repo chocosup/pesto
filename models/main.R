@@ -11,6 +11,7 @@ nobs = nrow(X)
 source(paste0(ModelSourceFolder,"config.R"))
 
 algoFiles=data.frame(
+  Mean          = "mean_model.R",
   Simple.linear = "simple_linear_model.R",
   LARS          = "lars_model.R",
   Simple.LARS   = "simple_lars_model.R",
@@ -18,7 +19,6 @@ algoFiles=data.frame(
   NN            = "NN_model.R",
   gunnar        = "gunnar.R"
 )
-
 
 
 algoNames=names(runAlgo)[which(runAlgo==TRUE)]
