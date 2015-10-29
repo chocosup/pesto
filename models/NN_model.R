@@ -29,8 +29,16 @@ trainModel <- function(X_, Y_)
   
   f <- as.formula(paste('Y ~', paste(n[!n %in% 'Y'], collapse = ' + ')))
   
-  # mynet <- neuralnet(f, data, hidden = c(10,10,7,5,3,1), threshold = 0.01)
   # mynet <- neuralnet(f, data, hidden = c(30,25,20,15,10,5,1), threshold = 0.01)
+  
+  mynet <- neuralnet(f, data, hidden = c(30,25,20,15,10,5,1), threshold = 0.001,
+                     stepmax = 2e+04, rep = 1, startweights = NULL,
+                     learningrate.limit = NULL,
+                     learningrate=0.001, lifesign="none",
+                     lifesign.step = 1000,
+                     err.fct = "sse",
+                     linear.output = FALSE,
+                     constant.weights = NULL, likelihood = TRUE)
   
   return(list(mynet, mins, maxs, a, b))
 }
