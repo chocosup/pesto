@@ -7,15 +7,17 @@ levels(client_pesto_final$LIBELLE_ACTIVITE) = c("bleu agricole", "bleu artisans 
 offres = levels(client_pesto_final$LIBELLE_ACTIVITE)
 HTA_nb = length(HTA_names)
 
-clients_par_offre = data.frame(CODE_GDO = HTA_names)
-conso_par_offre = data.frame(CODE_GDO = HTA_names)
+clients_par_offre  = data.frame(CODE_GDO = HTA_names)
+conso_par_offre    = data.frame(CODE_GDO = HTA_names)
+souscrit_par_offre = data.frame(CODE_GDO = HTA_names)
 
 
 
 for(i in 1:length(offres))
 {
-  clients_par_offre[, offres[i]] = 0
-  conso_par_offre[, offres[i]] = 0
+  clients_par_offre [, offres[i]] = 0
+  conso_par_offre   [, offres[i]] = 0
+  souscrit_par_offre[, offres[i]] = 0
 }
 
 
@@ -23,11 +25,12 @@ for(i in 1:length(offres))
 
 for(i in 1:HTA_nb)
 {
-  temp = client_pesto_final[client_pesto_final$CODE_GDO == clients_par_offre$CODE_GDO[i], c("LIBELLE_ACTIVITE","Conso_customer_Wh")] # On isole les lignes et colonnes qui nous interessent. Isoler les lignes de cette facon semble etre beaucoup plus rapide que le faire manuellement en parcourant la liste, ça doit être vectoriel ou quelque chose comme ça...
+  temp = client_pesto_final[client_pesto_final$CODE_GDO == clients_par_offre$CODE_GDO[i], c("LIBELLE_ACTIVITE","Conso_customer_Wh", "P_SOUSCRITE_W")] # On isole les lignes et colonnes qui nous interessent. Isoler les lignes de cette facon semble etre beaucoup plus rapide que le faire manuellement en parcourant la liste, ça doit être vectoriel ou quelque chose comme ça...
   for(j in 1:length(offres))
   {
-    clients_par_offre[i, offres[j]] = sum(temp$LIBELLE_ACTIVITE == offres[j])
-    conso_par_offre[i, offres[j]] = sum(temp[temp$LIBELLE_ACTIVITE == offres[j], "Conso_customer_Wh"], na.rm = TRUE)
+    clients_par_offre [i, offres[j]] = sum(temp$LIBELLE_ACTIVITE == offres[j])
+    conso_par_offre   [i, offres[j]] = sum(temp[temp$LIBELLE_ACTIVITE == offres[j], "Conso_customer_Wh"], na.rm = TRUE)
+    souscrit_par_offre[i, offres[j]] = sum(temp[temp$LIBELLE_ACTIVITE == offres[j], "P_SOUSCRITE_W"], na.rm = TRUE)
   }
 }
 
@@ -47,13 +50,19 @@ for(PS_name in PS_names)
   levels(conso_par_offre$CODE_GDO) = append(levels(conso_par_offre$CODE_GDO), PS_name)
   conso_par_offre[compteur,1] = PS_name
   
+  # souscrit_par_offre
+  souscrit_par_offre[compteur,-1] = colSums(souscrit_par_offre[stri_startswith_fixed(souscrit_par_offre$CODE_GDO[1:HTA_nb],PS_name),-1])
+  levels(souscrit_par_offre$CODE_GDO) = append(levels(souscrit_par_offre$CODE_GDO), PS_name)
+  souscrit_par_offre[compteur,1] = PS_name
+  
   compteur = compteur + 1
 }
 
 ###
 
-clients_par_offre[, "Total"] = rowSums(clients_par_offre[, offres])
-conso_par_offre[, "Total"] = rowSums(conso_par_offre[, offres])
+clients_par_offre [, "Total"] = rowSums(clients_par_offre[, offres])
+conso_par_offre   [, "Total"] = rowSums(conso_par_offre[, offres])
+souscrit_par_offre[, "Total"] = rowSums(souscrit_par_offre[, offres])
 
 rm(temp)
 
