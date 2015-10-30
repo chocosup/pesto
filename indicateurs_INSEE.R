@@ -1,3 +1,5 @@
+cat("\n!!!!!! SI CE MESSAGE S'AFFICHE, ENGUEULER SYLVAIN !!!!!!!\n\n")
+
 load(file=paste(INSEEDataFolder,"Dep69_2012.RData"          ,sep=""))
 
 Recensement=logement_69

@@ -25,7 +25,8 @@ for(i in 1:length(offres))
 
 for(i in 1:HTA_nb)
 {
-  temp = client_pesto_final[client_pesto_final$CODE_GDO == clients_par_offre$CODE_GDO[i], c("LIBELLE_ACTIVITE","Conso_customer_Wh", "P_SOUSCRITE_W")] # On isole les lignes et colonnes qui nous interessent. Isoler les lignes de cette facon semble etre beaucoup plus rapide que le faire manuellement en parcourant la liste, ça doit être vectoriel ou quelque chose comme ça...
+  temp = client_pesto_final[client_pesto_final$CODE_GDO == clients_par_offre$CODE_GDO[i],
+                            c("LIBELLE_ACTIVITE","Conso_customer_Wh", "P_SOUSCRITE_W")] # On isole les lignes et colonnes qui nous interessent. Isoler les lignes de cette facon semble etre beaucoup plus rapide que le faire manuellement en parcourant la liste, ça doit être vectoriel ou quelque chose comme ça...
   for(j in 1:length(offres))
   {
     clients_par_offre [i, offres[j]] = sum(temp$LIBELLE_ACTIVITE == offres[j])

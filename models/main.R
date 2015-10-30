@@ -12,6 +12,7 @@ source(paste0(ModelSourceFolder,"config.R"))
 
 algoFiles=data.frame(
   Mean          = "mean_model.R",
+  Thibaud       = "thibaud_model.R",
   Simple.linear = "simple_linear_model.R",
   LARS          = "lars_model.R",
   Simple.LARS   = "simple_lars_model.R",
@@ -31,6 +32,10 @@ resultsLeaveOneOut = matrix(NA,nbAlgos,nbVariables)
 rownames(resultsLeaveOneOut) <- algoNames
 colnames(resultsLeaveOneOut) <- varNames
 
+timeLeaveOneOut = matrix(NA,nbAlgos,nbVariables)
+rownames(timeLeaveOneOut) <- algoNames
+colnames(timeLeaveOneOut) <- varNames
+
 
 
 for (variableName in varNames)
@@ -49,10 +54,13 @@ for (variableName in varNames)
     modelName = paste0(algoName, " model for ", variableName)
     cat("Doing: ",modelName,"\n")
     
+    t0 = Sys.time()
     source(paste0(ModelSourceFolder,as.character(algoFiles[[algoName]])))
     source(paste0(ModelSourceFolder,"leaveoneout.R"))
     
     resultsLeaveOneOut[algoName,variableName] = rmse
+    timeLeaveOneOut[algoName,variableName] = as.numeric(Sys.time() - t0,units="secs")
+    cat("Duration: ",format(Sys.time() - t0),"\n")
   }
   
   while (as.numeric(dev.cur()) > 1) {
