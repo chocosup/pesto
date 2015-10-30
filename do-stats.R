@@ -81,6 +81,3 @@ source("correlation.R")
 
 # Do cross validation on several models
 source(paste0(ModelSourceFolder,"main.R"))
-
-
-
