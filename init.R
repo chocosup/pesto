@@ -86,6 +86,12 @@ ModelSourceFolder=paste0(getwd(),separator,"models",separator,"machine learning"
 
 
 
+#--------------------------------------------------------------
+#                 Dossier du modele "empirique"
+#--------------------------------------------------------------
+EmpiricSourceFolder=paste0(getwd(),separator,"models",separator,"empiric", separator)
+
+
 
 # Load customer base to retrieve the list of interesting HTA
 load(file=ClientFileName)
