@@ -69,3 +69,39 @@ min_plage <- function(M)
   v = append(v, points - M[2,ncol])
   return(c(which.min(v),min(v)))
 }
+
+#============    "plages pertinentes de données" trop petites   ============#
+# Inputs : M = Matrice de dim (2,n) censée représenter les plages de trous  #
+#         (censée représenter les plages de trous)                          #
+#          n = nombre de jours minimal d'une "plage pertinente" acceptable  #
+# Output : P = Matrice dont les colonnes sont des couples                   #
+#              (numéro de la plage, longueur) des plages trop petites.      #
+#              !!! renvoie NULL si toutes les plages sont OK !!!            #
+#===========================================================================#
+
+small_ranges <- function(M,n)
+{
+  # années bissextiles
+  points = 0
+  if(year %% 4) {points = 144 * 365}
+  else {points = 144 * 366}
+  
+  acceptable = n*144
+  
+  ncol = length(M[1,])
+  P = NULL
+  a = M[1,1] - 1
+  
+  if (a < acceptable) { P = cbind(P, c(0, a)) }
+  
+  for (i in 1:(ncol-1))
+  {
+    a = M[1,i+1] - M[2,i] - 1
+    if (a < acceptable) { P = cbind(P, c(i, a)) }
+  }
+  
+  a = points - M[2,ncol]
+  if (a < acceptable) { P = cbind(P, c(ncol, a)) }
+  
+  return(P)
+}
