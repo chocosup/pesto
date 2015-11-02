@@ -21,11 +21,11 @@ temp_jour=to.daily(apply.daily(temperatures,FUN = mean),drop.time = TRUE)[,1]
 
 if(file.exists(SaveFileName))
 {
-  cat("Loading thermosensibility stats...")
+  cat("Loading thermosensibility stats...\n")
   load(SaveFileName)
   
 } else {
-  cat("Recomputing thermosensibility stats...")
+  cat("Recomputing thermosensibility stats...\n")
   
   thermo_A      =array(NA,nb_HTA)
   thermo_B      =array(NA,nb_HTA)

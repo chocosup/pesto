@@ -60,17 +60,17 @@ source(paste0(DataSourceFolder,"stats_par_offre.R"))
 
 # Compute INSEE indicators
 
-INSEEFileName=paste0(StatsOutFolder,"insee.Rdata")
+INSEEFileName = paste0(StatsOutFolder,"insee.Rdata")
 if(file.exists(INSEEFileName))
 {
   cat("Loading INSEE stats...\n")
   load(INSEEFileName)
 } else {
   source("indicateurs_INSEE.R")
-  save(IndicateursINSEE, file=INSEEFileName)
+  save(IndicateursINSEE, file = INSEEFileName)
 }
 
-IndicateursINSEE=IndicateursINSEE[,
+IndicateursINSEE = IndicateursINSEE[,
                                   !names(IndicateursINSEE) %in% c("pourc_REFERENT_MOINS_14ANS")
                                   ]
 
@@ -81,6 +81,3 @@ source("correlation.R")
 
 # Do cross validation on several models
 source(paste0(ModelSourceFolder,"main.R"))
-
-
-

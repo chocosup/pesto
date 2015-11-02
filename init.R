@@ -86,6 +86,12 @@ ModelSourceFolder=paste0(getwd(),separator,"models",separator)
 
 
 
+#--------------------------------------------------------------
+#                 Dossier du modele "empirique"
+#--------------------------------------------------------------
+EmpiricSourceFolder=paste0(getwd(),separator,"models",separator,"empiric", separator)
+
+
 
 # Load customer base to retrieve the list of interesting HTA
 load(file=ClientFileName)
@@ -108,5 +114,3 @@ cat("PS found:", length(PS_names),"\n")
 
 # All names HTA + PS
 All_names=c(HTA_names, PS_names)
-
-
