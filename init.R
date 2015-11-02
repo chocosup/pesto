@@ -84,6 +84,8 @@ DataSourceFolder=paste0(getwd(),separator,"data_team_sources",separator)
 #--------------------------------------------------------------
 ModelSourceFolder=paste0(getwd(),separator,"models",separator)
 
+TertiaireSourceFolder=paste0(getwd(),separator,"tertiaire",separator)
+
 
 
 
