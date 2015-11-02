@@ -78,14 +78,11 @@ IndicateursINSEE = IndicateursINSEE[,
 source("correlation.R")
 
 
-
 # Do cross validation on several models
 source(paste0(ModelSourceFolder,"main.R"))
 
 
 # Do cross validation on several models
 source(paste0(TertiaireSourceFolder,"main.R"))
-
-
 
 

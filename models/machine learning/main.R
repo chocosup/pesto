@@ -18,7 +18,8 @@ algoFiles=data.frame(
   Simple.LARS   = "simple_lars_model.R",
   Random.Forest = "random_forest_model.R",
   NN            = "NN_model.R",
-  gunnar        = "gunnar.R"
+  gunnar        = "gunnar.R",
+  sigvard       = "sigvard.R"
 )
 
 
