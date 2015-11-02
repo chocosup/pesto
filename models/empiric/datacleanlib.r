@@ -1,25 +1,3 @@
-#================    Longueur maximale de TRUE    ==================#
-# Input : tableau x de booléens                                     #
-# Output : entier b = longueur maximale de TRUE consécutifs dans x  #
-#===================================================================#
-
-consecutive <- function(x)
-{
-  a = 0
-  b = 0
-  for(i in 1:length(x))
-  {
-    if(x[i])
-    {
-      a = a+1
-      if(a > b){b = a}
-    }
-    else{a = 0}
-  }
-  return(b)
-}
-
-
 #======================    Blocs de TRUE    ========================#
 # Input : tableau x de booléens                                     #
 # Output : matrice M = pour chaque bloc de TRUE consécutifs de x,   #
@@ -51,7 +29,7 @@ blocs_true <- function(x)
 #========    Plus petite "plage pertinente de données"    ==========#
 # Input : Matrice M de dim (2,n)                                    #
 #         (censée représenter les plages de "trous")                #
-# Output : vecteur (indice, longueur) de la plus longue plage       #
+# Output : vecteur (indice, longueur) de la plus courte plage       #
 #===================================================================#
 
 min_plage <- function(M)
@@ -104,4 +82,45 @@ small_ranges <- function(M,n)
   if (a < acceptable) { P = cbind(P, c(ncol, a)) }
   
   return(P)
+}
+
+
+#======================    Normalisation    ========================#
+# Input : X = matrice ou XTS, n = nombre de jours sur lesquels      #
+#         la moyenne est calculée, b = normalisé par sd ? (booléen) #
+# Output : R = X normalisé                                          #
+#===================================================================#
+
+normalise <- function(X,n,b)
+{
+  d = n*144
+  lx = length(X[,1])
+  R = X
+  nd = lx %/% d
+  for (i in 1:nd)
+  {
+    R[((i-1)*d + 1):(i*d),] = scale(R[((i-1)*d + 1):(i*d),], scale = b)
+  }
+  R[(nd*d):lx,] = scale(R[(nd*d):lx,], scale = b)
+  
+  return(R)
+}
+
+
+#=====================    Moyenne par heure    =========================#
+# Input : X = vecteur (censé représenter la conso d'un départ)          #
+# Output : out = vecteur de longueur 144 moyennant la conso par heure   #
+#=======================================================================#
+
+moyparheure = function(X)
+{
+  cyc = vector(mode = "logical", 144)
+  out = vector(mode = "numeric", 144)
+  for (i in 1:144)
+  {
+    cyc[] = FALSE
+    cyc[i] = TRUE
+    out[i] = mean(as.numeric(X)[cyc])
+  }
+  return(out)
 }
