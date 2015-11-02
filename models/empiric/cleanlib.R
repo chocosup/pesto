@@ -160,6 +160,9 @@ correct_plg = function(X,lb,ub,j)
 {
   out = X
   cyc = vector(mode = "logical", 144)
+  rsub = vector(mode = "numeric", 144)
+  lsub = vector(mode = "numeric", 144)
+  c1 = 0
   
   if (is.null(lb)) {
     ub[2] = min(ub[2],ub[1]+144*j-1)
@@ -183,9 +186,11 @@ correct_plg = function(X,lb,ub,j)
         # X_X ???
       } else {
         # X_/
+        c1 = mean(X[lb[1]:lb[2]])
       }
     } else if (ub[2] - ub[1] < 143) {
       # \_X
+      c1 = mean(X[ub[1]:ub[2]])
     } else
     {
       # \_/

@@ -1,3 +1,4 @@
+source("init.R")
 source(paste0(EmpiricSourceFolder, "datacleanlib.R"))
 
 ### Restreidre aux départs HTA étudiés ###
@@ -25,10 +26,3 @@ for(HTA_name in HTA_ok)
 HTA_ok = as.character(colnames(mins[1, mins >= 0]))
 NewConsoMeas = ConsoMeasParDepart[,HTA_ok]
 pourcentages_zero = pourcentages_zero[,HTA_ok]
-
-### TEMP ###
-# trous = c()
-# for (i in 1:length(HTA_ok))
-# {
-#   trous = append(trous, consecutive(as.numeric(NewConsoMeas[,i]) == 0))
-# }
