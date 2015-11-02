@@ -82,7 +82,7 @@ DataSourceFolder=paste0(getwd(),separator,"data_team_sources",separator)
 #--------------------------------------------------------------
 #                 Dossier de modelisation
 #--------------------------------------------------------------
-ModelSourceFolder=paste0(getwd(),separator,"models",separator)
+ModelSourceFolder=paste0(getwd(),separator,"models",separator,"machine learning", separator)
 
 TertiaireSourceFolder=paste0(getwd(),separator,"tertiaire",separator)
 
