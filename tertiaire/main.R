@@ -97,7 +97,7 @@ for(p in 1:6) {
 }
 
 
-coeff = Mp * V
+coeff = Mp %*% V
 
 
 
