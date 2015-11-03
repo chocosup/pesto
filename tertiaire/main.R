@@ -69,7 +69,6 @@ alpha = as.matrix(
 
 
 
-
 M = matrix(NA,nM,nM)
 
 for(p in 1:6) {
@@ -89,7 +88,7 @@ for(p in 1:6) {
   }
 }
 
-Mp = M^-1
+Mp = solve(M)
 
 V = matrix(NA,nM,1)
 
