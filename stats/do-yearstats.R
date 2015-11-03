@@ -10,7 +10,7 @@ if(file.exists(SaveFileName))
   cat("Starting: ", format(Sys.time()),"\n")
   
   unlink(StatsOutFolder, recursive=TRUE, force=TRUE)
-  dir.create(StatsOutFolder)
+  dir.create(StatsOutFolder, showWarnings = FALSE)
   
   cat("Computing year indicators...\n")
   pb <- txtProgressBar(min=1, max=nb_HTA, style=3)

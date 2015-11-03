@@ -40,13 +40,13 @@ INSEEDataFolder =paste0(getwd(), separator, "data", separator, "INSEE"          
 MeteoDataFolder =paste0(getwd(), separator, "data", separator, "meteo"                    , separator)
 
 # HTA consumption file
-MesureFileName=paste0(ERDFDataFolder,"Mesures",separator,"ConsoMeasParDepart_",zonegeo,year, ".xts.RData")
+MesureFileName = paste0(ERDFDataFolder,"Mesures",separator,"ConsoMeasParDepart_",zonegeo,year, ".xts.RData")
 # HTA reorga file
-ReorgaFileName=paste0(ERDFDataFolder,"Mesures",separator,"ReorgaParDepart_"   ,zonegeo,year, ".xts.RData")
+ReorgaFileName = paste0(ERDFDataFolder,"Mesures",separator,"ReorgaParDepart_"   ,zonegeo,year, ".xts.RData")
 # Client data file
-ClientFileName=paste0(ERDFDataFolder,"Customers_",zonegeo,"_",year,"_PESTO.RData")
+ClientFileName = paste0(ERDFDataFolder,"Customers_",zonegeo,"_",year,"_PESTO.RData")
 # Meteo file
-MeteoFileName=paste0(MeteoDataFolder,"Temperature.xts.", zonegeo, "_1997-2014.RData")
+MeteoFileName  = paste0(MeteoDataFolder,"Temperature.xts.", zonegeo, "_1997-2014.RData")
 
 
 #--------------------------------------------------------------
@@ -57,10 +57,10 @@ MeteoFileName=paste0(MeteoDataFolder,"Temperature.xts.", zonegeo, "_1997-2014.RD
 StatsOutFolder = paste0(OuputFolder, "stat_", zonegeo, "_", year, separator)
 if(!file.exists(StatsOutFolder))
 {
-  dir.create(StatsOutFolder)
+  dir.create(StatsOutFolder, showWarnings = FALSE)
 }
 # sources
-StatsSourceFolder=paste0(getwd(),separator,"stats",separator)
+StatsSourceFolder = paste0(getwd(),separator,"stats",separator)
 
 
 
@@ -72,47 +72,47 @@ StatsSourceFolder=paste0(getwd(),separator,"stats",separator)
 DataOutFolder = paste0(OuputFolder, "data_", zonegeo, "_", year, separator)
 if(!file.exists(DataOutFolder))
 {
-  dir.create(DataOutFolder)
+  dir.create(DataOutFolder, showWarnings = FALSE)
 }
 
 # sources
-DataSourceFolder=paste0(getwd(),separator,"data_team_sources",separator)
+DataSourceFolder = paste0(getwd(),separator,"data_team_sources",separator)
 
 
 #--------------------------------------------------------------
 #                 Dossier de modelisation
 #--------------------------------------------------------------
-ModelSourceFolder=paste0(getwd(),separator,"models",separator,"machine learning", separator)
+ModelSourceFolder     = paste0(getwd(),separator,"models",separator,"machine learning", separator)
 
-TertiaireSourceFolder=paste0(getwd(),separator,"tertiaire",separator)
+TertiaireSourceFolder = paste0(getwd(),separator,"tertiaire",separator)
 
 
 
 #--------------------------------------------------------------
 #                 Dossier du modele "empirique"
 #--------------------------------------------------------------
-EmpiricSourceFolder=paste0(getwd(),separator,"models",separator,"empiric", separator)
+EmpiricSourceFolder = paste0(getwd(),separator,"models",separator,"empiric", separator)
 
 
 
 # Load customer base to retrieve the list of interesting HTA
-load(file=ClientFileName)
-HTA_names<-unique(client_pesto_final$CODE_GDO)
-HTA_names<-HTA_names[!(HTA_names %in% HTA_blacklist)]
-HTA_names=as.character(HTA_names)
+load(file = ClientFileName)
+HTA_names <- unique(client_pesto_final$CODE_GDO)
+HTA_names <- HTA_names[!(HTA_names %in% HTA_blacklist)]
+HTA_names = as.character(HTA_names)
 
 # Load measures from the interesting HTA only
-load(file=MesureFileName)
-HTA_names<-HTA_names[HTA_names %in% names(ConsoMeasParDepart)]
+load(file = MesureFileName)
+HTA_names <- HTA_names[HTA_names %in% names(ConsoMeasParDepart)]
 
 # HTA names
-HTA_names=HTA_names[order(HTA_names)]
+HTA_names = HTA_names[order(HTA_names)]
 cat("HTA found:", length(HTA_names),"\n")
 
 # PS names
-PS_names=unique(substr(HTA_names,1,5))
-PS_names=PS_names[order(PS_names)]
+PS_names = unique(substr(HTA_names,1,5))
+PS_names = PS_names[order(PS_names)]
 cat("PS found:", length(PS_names),"\n")
 
 # All names HTA + PS
-All_names=c(HTA_names, PS_names)
+All_names = c(HTA_names, PS_names)
