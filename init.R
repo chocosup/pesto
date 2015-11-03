@@ -57,7 +57,7 @@ MeteoFileName=paste0(MeteoDataFolder,"Temperature.xts.", zonegeo, "_1997-2014.RD
 StatsOutFolder = paste0(OuputFolder, "stat_", zonegeo, "_", year, separator)
 if(!file.exists(StatsOutFolder))
 {
-  dir.create(StatsOutFolder)
+  dir.create(StatsOutFolder, showWarnings = FALSE)
 }
 # sources
 StatsSourceFolder=paste0(getwd(),separator,"stats",separator)
@@ -72,7 +72,7 @@ StatsSourceFolder=paste0(getwd(),separator,"stats",separator)
 DataOutFolder = paste0(OuputFolder, "data_", zonegeo, "_", year, separator)
 if(!file.exists(DataOutFolder))
 {
-  dir.create(DataOutFolder)
+  dir.create(DataOutFolder, showWarnings = FALSE)
 }
 
 # sources

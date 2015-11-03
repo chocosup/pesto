@@ -74,15 +74,15 @@ IndicateursINSEE = IndicateursINSEE[,
                                   !names(IndicateursINSEE) %in% c("pourc_REFERENT_MOINS_14ANS")
                                   ]
 
-# Compute correlation matrices and plot them in pdf files
+
+cat("Computing correlation matrices and plot them in pdf files.\n")
 source("correlation.R")
 
 
-# Do cross validation on several models
+cat("Do cross validation on several models.\n")
 source(paste0(ModelSourceFolder,"main.R"))
 
 
-# Do cross validation on several models
+cat("Do tertiaire function optimization.\n")
 source(paste0(TertiaireSourceFolder,"main.R"))
-
 
