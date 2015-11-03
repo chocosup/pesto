@@ -1,3 +1,22 @@
+#======================    Moyenne modulo n    =========================#
+# Input :  X = tableau ou vecteur                                       #
+# Output : Y = vecteur de longueur n. Y[i] est la moyenne des X[j]      #
+#              prise sur l'ensemble des j congrus à i modulo n          #
+#=======================================================================#
+
+selectmod = function(X,n)
+{
+  Y = vector("numeric",n)
+  Z = vector("logical",n)
+  for(i in 1:n) {
+    Z[] = FALSE
+    Z[i] = TRUE
+    Y[i] = mean(as.numeric(X)[Z])
+  }
+  return(Y)
+}
+
+
 #======================    Blocs de TRUE    ========================#
 # Input : tableau X de booléens                                     #
 # Output : matrice M = pour chaque bloc de TRUE consécutifs de x,   #
@@ -108,25 +127,6 @@ normalise <- function(X,n,b)
 }
 
 
-#=====================    Moyenne par heure    =========================#
-# Input : X = vecteur (censé représenter la conso d'un départ)          #
-# Output : out = vecteur de longueur 144 moyennant la conso par heure   #
-#=======================================================================#
-
-moyparheure = function(X)
-{
-  cyc = vector(mode = "logical", 144)
-  out = vector(mode = "numeric", 144)
-  for (i in 1:144)
-  {
-    cyc[] = FALSE
-    cyc[i] = TRUE
-    out[i] = mean(as.numeric(X)[cyc])
-  }
-  return(out)
-}
-
-
 #===============    Plus grandes plages d'erreurs    ===================#
 # Input : X = matrice, xts ou data.frame                                #
 #         (censé représenter la conso NORMALISEE d'un départ)           #
@@ -153,50 +153,85 @@ consecutives = function(X, threshold)
 #          lb = vect de taille 2, données valides avant la plage        #
 #          ub = vect de taille 2, données valides après la plage        #
 #          j = jours max à moyenner à droite et à gauche d'un trou      #
-# Output : out = X corrigé                                              #
+# Output : liste (out, err_code)                                        #
+#          out = X corrigé                                              #
+#          err_code = code d'erreur : 0 si OK                           #
 #=======================================================================#
 
 correct_plg = function(X,lb,ub,j)
 {
   out = X
+  bds = c()
   cyc = vector(mode = "logical", 144)
   rsub = vector(mode = "numeric", 144)
   lsub = vector(mode = "numeric", 144)
-  c1 = 0
+  cnst = 0
+  err_code = 0
   
   if (is.null(lb)) {
+    # On tronque la plage de droite à j jours
     ub[2] = min(ub[2],ub[1]+144*j-1)
+    # On définit la plage à remplacer
+    bds = c(1, ub[1] - 1)
     if (ub[2] - ub[1] < 143) {
-      # |_X ???
+      # |_X
+      
+      # Méthode impossible à appliquer
+      err_code = 1
+      
     } else {
       # |_/
+      
     }
   } else if (is.null(ub)) {
+    # On tronque la plage de gauche à j jours
     lb[1] = max(lb[2]-144*j+1,lb[1])
+    # On définit la plage à remplacer
+    bds = c(lb[2] + 1, length(X))
     if (lb[2] - lb[1] < 143) {
-      # X_| ???
+      # X_|
+      
+      # Méthode impossible à appliquer
+      err_code = 2
     } else {
       # \_|
+      
     }
   } else {
-    lb[1] = max(lb[2]-144*j+1,lb[1])
-    ub[2] = min(ub[2],ub[1]+144*j-1)
+    # On tronque les plages à droite et à gauche à j jours
+    lb[1] = max(lb[2] - 144*j + 1, lb[1])
+    ub[2] = min(ub[2] ,ub[1] + 144*j - 1)
+    # On définit la plage à remplacer
+    bds = c(lb[2] + 1, ub[1] - 1)
     if (lb[2] - lb[1] < 143) {
       if (ub[2] - ub[1] < 143) {
-        # X_X ???
+        # X_X
+        
+        # Méthode impossible à appliquer
+        err_code = 3
       } else {
         # X_/
+        
         c1 = mean(X[lb[1]:lb[2]])
       }
     } else if (ub[2] - ub[1] < 143) {
       # \_X
+      
       c1 = mean(X[ub[1]:ub[2]])
     } else
     {
       # \_/
+      
+      # On fait les modèles journaliers à droite et à gauche
+      rsub = selectmod(X[ub[1]:ub[2]],144)
+      rsub = rev(rep(rev(rsub), length.out = bds[2]-bds[1]+1))
+      lsub = rev(selectmod(rev(X[lb[1]:lb[2]]),144))
+      lsub = rep(lsub, length.out = bds[2]-bds[1]+1)
+      poids = seq(0,1, length.out = ub[1] - lb[2] + 1)[-c(1, ub[1] - lb[2])]
+      out[bds[1]:bds[2]] = (1-poids)*lsub + poids*rsub
     }
   }
-  return(out)
+  return(list(out,err_code))
 }
 
 
@@ -216,20 +251,22 @@ correct = function(X,M,j)
   # premiere plage
   if (M[1,1] == 1) { lbounds = NULL } else { lbounds = c(1,M[1,1]-1) }
   ubounds = c(M[2,1] + 1, M[1,2] - 1)
-  out = correct_plg(out,lbounds,ubounds,j)
+  out = correct_plg(out,lbounds,ubounds,j)[[1]]
   
   # plages intermediaires
   for (i in 2:(ncol(M)-1))
   {
     lbounds = ubounds
     ubounds = c(M[2,i]+1, M[1,i+1]-1)
-    out = correct_plg(out,lbounds,ubounds,j)
+    out = correct_plg(out,lbounds,ubounds,j)[[1]]
   }
   
   # derniere plage
   lbounds = ubounds
   if (length(X) == M[2,ncol(M)]) { ubounds = NULL} else { ubounds = c(M[2,ncol(M)]+1, length(X)) }
-  out = correct_plg(out,lbounds,ubounds,j)
+  out = correct_plg(out,lbounds,ubounds,j)[[1]]
   
   return(out)
 }
+
+
