@@ -34,7 +34,7 @@ fbase8 = matrix(replicate(nb_Jours, fbase(8)), 1, nb_Indices)
 fbase9 = matrix(replicate(nb_Jours, fbase(9)), 1, nb_Indices)
 
 Temp = t(as.matrix(rep(temperatures[period],each=3),nb_Indices,1))
-Temp = pmin(Temp-16,0) / 4
+Temp = pmin(16-Temp,0) / 4
 
 f = rbind(fbase0, fbase1, fbase2, fbase3, fbase4, fbase5, fbase6, fbase7, fbase8, fbase9,
           fbase0, fbase1, fbase2, fbase3, fbase4, fbase5, fbase6, fbase7, fbase8, fbase9,
@@ -42,6 +42,7 @@ f = rbind(fbase0, fbase1, fbase2, fbase3, fbase4, fbase5, fbase6, fbase7, fbase8
           fbase0, fbase1, fbase2, fbase3, fbase4, fbase5, fbase6, fbase7, fbase8, fbase9,
           fbase0, fbase1, fbase2, fbase3, fbase4, fbase5, fbase6, fbase7, fbase8, fbase9,
           fbase0, fbase1, fbase2, fbase3, fbase4, fbase5, fbase6, fbase7, fbase8, fbase9)
+
 
 for (n in 5:6) {
   for (k in 1:10) {
@@ -88,6 +89,9 @@ for(p in 1:6) {
     }
   }
 }
+
+M <- M / 10^10
+M[M<10^-8] <- 0
 
 Mp = M^-1
 
