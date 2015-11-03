@@ -1,11 +1,12 @@
 #======================    Blocs de TRUE    ========================#
-# Input : tableau x de booléens                                     #
+# Input : tableau X de booléens                                     #
 # Output : matrice M = pour chaque bloc de TRUE consécutifs de x,   #
 #             une colonne avec l'indice de début et de fin du bloc  #
 #===================================================================#
 
-blocs_true <- function(x)
+blocs_true <- function(X)
 {
+  x = as.logical(X)
   M = NULL
   b = FALSE
   a = NULL
@@ -122,5 +123,113 @@ moyparheure = function(X)
     cyc[i] = TRUE
     out[i] = mean(as.numeric(X)[cyc])
   }
+  return(out)
+}
+
+
+#===============    Plus grandes plages d'erreurs    ===================#
+# Input : X = matrice, xts ou data.frame                                #
+#         (censé représenter la conso NORMALISEE d'un départ)           #
+#         threshold = seuil à partir duquel un point est aberrant       #
+# Output : out = vecteur de longueur ncol(X) avec les plus grandes      #
+#                plages de données aberrantes                           #
+#=======================================================================#
+
+consecutives = function(X, threshold)
+{
+  out = c()
+  for (i in 1:ncol(X))
+  {
+    mat = blocs_true(as.logical(abs(X[,i]) > threshold))
+    if (!is.null(mat)) {out = append(out, max(mat[2,] - mat[1,] + 1))}
+    else {out = append(out,0)}
+  }
+  return(out)
+}
+
+
+#=======================    Correct plage    ===========================#
+# Input :  X = vecteur (censé représenter la conso d'un départ)         #
+#          lb = vect de taille 2, données valides avant la plage        #
+#          ub = vect de taille 2, données valides après la plage        #
+#          j = jours max à moyenner à droite et à gauche d'un trou      #
+# Output : out = X corrigé                                              #
+#=======================================================================#
+
+correct_plg = function(X,lb,ub,j)
+{
+  out = X
+  cyc = vector(mode = "logical", 144)
+  rsub = vector(mode = "numeric", 144)
+  lsub = vector(mode = "numeric", 144)
+  c1 = 0
+  
+  if (is.null(lb)) {
+    ub[2] = min(ub[2],ub[1]+144*j-1)
+    if (ub[2] - ub[1] < 143) {
+      # |_X ???
+    } else {
+      # |_/
+    }
+  } else if (is.null(ub)) {
+    lb[1] = max(lb[2]-144*j+1,lb[1])
+    if (lb[2] - lb[1] < 143) {
+      # X_| ???
+    } else {
+      # \_|
+    }
+  } else {
+    lb[1] = max(lb[2]-144*j+1,lb[1])
+    ub[2] = min(ub[2],ub[1]+144*j-1)
+    if (lb[2] - lb[1] < 143) {
+      if (ub[2] - ub[1] < 143) {
+        # X_X ???
+      } else {
+        # X_/
+        c1 = mean(X[lb[1]:lb[2]])
+      }
+    } else if (ub[2] - ub[1] < 143) {
+      # \_X
+      c1 = mean(X[ub[1]:ub[2]])
+    } else
+    {
+      # \_/
+    }
+  }
+  return(out)
+}
+
+
+#=========================    CORRECT    ===============================#
+# Input :  X = vecteur (censé représenter la conso d'un départ)         #
+#          M = matrice de plages à corriger                             #
+#          j = jours max à moyenner à droite et à gauche d'un trou      #
+# Output : out = X corrigé                                              #
+#                 !!!   DEPEND DE correct_plg   !!!                     #
+#=======================================================================#
+
+correct = function(X,M,j)
+{
+  if (is.null(M)) {return(X)}
+  out = X
+  
+  # premiere plage
+  if (M[1,1] == 1) { lbounds = NULL } else { lbounds = c(1,M[1,1]-1) }
+  ubounds = c(M[2,1] + 1, M[1,2] - 1)
+  out = correct_plg(out,lbounds,ubounds,j)
+  
+  # plages intermediaires
+  for (i in 2:(ncol(M)-1))
+  {
+    lbounds = ubounds
+    ubounds = c(M[2,i]+1, M[1,i+1]-1)
+    out = correct_plg(out,lbounds,ubounds,j)
+  }
+  
+  # derniere plage
+  lbounds = ubounds
+  if (length(X) == M[2,ncol(M)]) { ubounds = NULL} else { ubounds = c(M[2,ncol(M)]+1, length(X)) }
+  out = correct_plg(out,lbounds,ubounds,j)
+  
   return(out)
 }
