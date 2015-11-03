@@ -12,12 +12,12 @@ nb_Indices = length(tIndices)
 nb_Jours   = nb_Indices/24/6
 
 
-x <- (1:(24*6) - 72.5)
+x <- (1:(24*6) - (24*6+1)/2)
 
 fbase <- function(exposant) {
   y = x^exposant
   y = y - mean(y)
-  res = y / mean(abs(y))
+  res = y / sqrt(var(y))
   return(res)
 }
 
@@ -82,10 +82,6 @@ for(p in 1:6) {
         p1 = as.numeric(alpha[,p] %*% alpha[,n])
         
         p2 = as.numeric(f[ind1,] %*% f[ind2,])
-        
-        if (p2 == 0) {
-          cat(ind1, " ",ind2,"\n")
-        }
         
         M[ind1,ind2] = p1  * p2
       }
