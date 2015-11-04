@@ -282,25 +282,55 @@ correct = function(X,M,j)
   
   # premiere plage
   if (M[1,1] == 1) { lbounds = NULL } else { lbounds = c(1,M[1,1]-1) }
-  ubounds = c(M[2,1] + 1, M[1,2] - 1)
-  out = correct_plg(out,lbounds,ubounds,j)[[1]]
-  
-  # plages intermediaires
-  if(ncol(M) >= 3) {
-    for (i in 2:(ncol(M)-1))
-    {
-      lbounds = ubounds
-      ubounds = c(M[2,i]+1, M[1,i+1]-1)
-      out = correct_plg(out,lbounds,ubounds,j)[[1]]
+  if (ncol(M) > 1) {
+    ubounds = c(M[2,1] + 1, M[1,2] - 1)
+    out = correct_plg(out,lbounds,ubounds,j)[[1]]
+    
+    # plages intermediaires
+    if(ncol(M) >= 3) {
+      for (i in 2:(ncol(M)-1))
+      {
+        lbounds = ubounds
+        ubounds = c(M[2,i]+1, M[1,i+1]-1)
+        out = correct_plg(out,lbounds,ubounds,j)[[1]]
+      }
     }
+    
+    # derniere plage
+    lbounds = ubounds
+    if (length(X) == M[2,ncol(M)]) { ubounds = NULL} else { ubounds = c(M[2,ncol(M)]+1, length(X)) }
+    out = correct_plg(out,lbounds,ubounds,j)[[1]]
   }
-  
-  # derniere plage
-  lbounds = ubounds
-  if (length(X) == M[2,ncol(M)]) { ubounds = NULL} else { ubounds = c(M[2,ncol(M)]+1, length(X)) }
-  out = correct_plg(out,lbounds,ubounds,j)[[1]]
+  else
+  {
+    ubounds = c(M[2,1] + 1, length(X))
+    out = correct_plg(out,lbounds,ubounds,j)[[1]]
+  }
   
   return(out)
 }
 
+#========================    Framework    ==========================#
+# Input : X = données à corriger                                    #
+#         cols = colonnes de X à corriger                           #
+#         f = fonction de sélection des données corrompues.         #
+#             On doit avoir f : numeric -> logical                  #
+#         j = jours à moyenner                                      #
+#         la moyenne est calculée, b = normalisé par sd ? (booléen) #
+# Output : R = X normalisé                                          #
+#===================================================================#
 
+correct_framework = function(X,cols,f,j)
+{
+  Y = X[,cols]
+  for(col in 1:dim(Y)[2])
+  {
+    M = blocs_true(f(Y[,col]))
+    while(!is.null(M))
+    {
+      Y[,col] = correct(Y[,col],M,j)
+      M = blocs_true(f(Y[,col]))
+    }
+  }
+  return(Y)
+}
