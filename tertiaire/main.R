@@ -3,8 +3,11 @@ cat("[TERTIAIRE] Starting.\n")
 #start_Date="2011-01-01"
 #end_Date="2011-12-31"
 
-start_Date="2011-07-01"
-end_Date="2011-08-31"
+start_Date="2011-01-01"
+end_Date="2011-04-31"
+
+# start_Date="2011-01-01"
+# end_Date="2011-03-31"
 
 
 period=paste0(start_Date,"/",end_Date)
@@ -56,7 +59,7 @@ fsinharmonique <- function(frequency) {
 # fbase7 = matrix(replicate(nb_Jours, fbase(7)), 1, nb_Indices)
 # fbase8 = matrix(replicate(nb_Jours, fbase(8)), 1, nb_Indices)
 # fbase9 = matrix(replicate(nb_Jours, fbase(9)), 1, nb_Indices)
-
+# 
 # Std_func[[1]] = rbind(fbase0, fbase1, fbase2, fbase3, fbase4, fbase5, fbase6, fbase7, fbase8, fbase9)
 # Std_func[[2]] = rbind(fbase0, fbase1, fbase2, fbase3, fbase4, fbase5, fbase6, fbase7, fbase8, fbase9)
 # Std_func[[3]] = rbind(fbase0, fbase1, fbase2, fbase3, fbase4, fbase5, fbase6, fbase7, fbase8, fbase9)
@@ -179,6 +182,7 @@ alpha = cbind(Std_alpha, Thermo_alpha) / 1000
 
 
 cat("[TERTIAIRE] Computing matrix coefficient.\n")
+
 M = matrix(NA,nM,nM)
 
 pb <- txtProgressBar(min=1, max=nb_Functions*nb_Functions*dim_Functions*dim_Functions, style=3)
@@ -188,10 +192,10 @@ for(p in 1:nb_Functions) {
     ind1 = dim_Functions * (p-1) + l
     for(n in 1:nb_Functions) {
       for(k in 1:dim_Functions) {
+        ind2 = dim_Functions * (n-1) + k
         
         setTxtProgressBar(pb, ind2 + nb_Functions * dim_Functions * ind1)
         
-        ind2 = dim_Functions * (n-1) + k
         p1 = as.numeric(alpha[,p] %*% alpha[,n])
         p2 = as.numeric(f[ind1,] %*% f[ind2,])
         M[ind1,ind2] = p1  * p2
@@ -201,7 +205,7 @@ for(p in 1:nb_Functions) {
 }
 
 
-cat("[TERTIAIRE] Computing vector coefficient.\n")
+cat("\n[TERTIAIRE] Computing vector coefficient.\n")
 
 V = matrix(NA,nM,1)
 
@@ -230,6 +234,29 @@ for (i in 1:nb_Functions)
   rawfp[i,] = as.array(coeff[range] %*% rawf[range,])
 }
 
+Cp <- t(as.matrix(C))
+
+# predictions par depart
+prediction = alpha %*% fp
+
+depart_Square_Erreur = sqrt(rowMeans( (prediction - Cp)^2 ))
+depart_Mean          = rowMeans( abs(Cp) )
+depart_pc_Erreur     = depart_Square_Erreur / mean(depart_Mean)
+depart_Sylvain_Erreur = rowMeans( abs(prediction - Cp) / prediction )
+
+plot(sort(depart_pc_Erreur), type="h")
+plot(sort(depart_Sylvain_Erreur), type="h")
+plot(depart_pc_Erreur, depart_Sylvain_Erreur)
+
+
+msg = paste0(" Start date: ",start_Date,"\n",
+             "End   date: ",end_Date,"\n",
+             "RMSE    error: ", mean(depart_pc_Erreur), "\n",
+             "Sylvain error: ", mean(depart_Sylvain_Erreur), "\n")
+cat(msg)
+cat(msg,file=paste0(StatsOutFolder,"log_",year,".txt"))
+
+
 cat("[TERTIAIRE] Plotting and saving.\n")
 
 
@@ -247,13 +274,6 @@ for (i in 1:nb_Functions) {
 
 closePDF()
 
-
-# predictions par depart
-prediction = alpha %*% fp
-
-
-
-as.character(as.Date(as.character(tIndices[length(tIndices) * 9 / 17])))
 
 nb_sample = 10
 for (i in 1:nb_sample) {
@@ -276,25 +296,5 @@ for (i in 1:nb_sample) {
   closePDF()
 }
 
-
-
-Cp <- t(as.matrix(C))
-
-
-depart_Square_Erreur = sqrt(rowMeans( (prediction - Cp)^2 ))
-depart_Mean          = rowMeans( abs(Cp) )
-depart_pc_Erreur     = depart_Square_Erreur / depart_Mean
-depart_Sylvain_Erreur = rowMeans( abs(prediction - Cp) / prediction )
-
-plot(sort(depart_pc_Erreur), type="h")
-plot(sort(depart_Sylvain_Erreur), type="h")
-plot(depart_pc_Erreur, depart_Sylvain_Erreur)
-
-
-cat(" Start date:",start_Date,"\n",
-    "End   date:",end_Date,"\n",
-    "RMSE    error: ", mean(depart_pc_Erreur), "\n",
-    "Sylvain error: ", mean(depart_Sylvain_Erreur), "\n",
-    file=paste0(StatsOutFolder,"log_",year,".txt"))
 
 
