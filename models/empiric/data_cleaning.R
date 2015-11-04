@@ -26,3 +26,6 @@ for(HTA_name in HTA_ok)
 HTA_ok = as.character(colnames(mins[1, mins >= 0]))
 NewConsoMeas = ConsoMeasParDepart[,HTA_ok]
 pourcentages_zero = pourcentages_zero[,HTA_ok]
+
+### HEURISTIQUE DE CORRECTION DES DONNÉES ###
+# heuristique = function(x) { return(x == 0) }
