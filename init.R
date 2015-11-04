@@ -1,6 +1,6 @@
 rm(list=ls()); gc();  # Efface tout et libere la RAM
 
-year=2011       #  2012
+year=2012       #  2012
 zonegeo="Bretagne"  #  Lyon
 separator="/"   #  \\
 

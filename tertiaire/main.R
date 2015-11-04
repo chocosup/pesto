@@ -37,6 +37,8 @@ fbase6 = matrix(replicate(nb_Jours, fbase(6)), 1, nb_Indices)
 fbase7 = matrix(replicate(nb_Jours, fbase(7)), 1, nb_Indices)
 fbase8 = matrix(replicate(nb_Jours, fbase(8)), 1, nb_Indices)
 fbase9 = matrix(replicate(nb_Jours, fbase(9)), 1, nb_Indices)
+# fbase10= matrix(replicate(nb_Jours, cos(2*x)  ), 1, nb_Indices)
+# fbase11= matrix(replicate(nb_Jours, sin(2*x)  ), 1, nb_Indices)
 
 Std_func = list()
 Thermo_func = list()
