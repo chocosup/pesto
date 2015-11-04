@@ -1,6 +1,7 @@
+cat("[TERTIAIRE] Starting.\n")
 
-start_Date="2011-07-01"
-end_Date="2011-08-31"
+start_Date="2011-01-01"
+end_Date="2011-12-31"
 
 period=paste0(start_Date,"/",end_Date)
 
@@ -163,14 +164,19 @@ for (n in 1:nb_Thermo_Functions) {
 alpha = cbind(Std_alpha, Thermo_alpha) / 1000
 
 
-
+cat("[TERTIAIRE] Computing matrix coefficient.\n")
 M = matrix(NA,nM,nM)
+
+pb <- txtProgressBar(min=1, max=nb_Functions*nb_Functions*dim_Functions*dim_Functions, style=3)
 
 for(p in 1:nb_Functions) {
   for(l in 1:dim_Functions) {
     ind1 = dim_Functions * (p-1) + l
     for(n in 1:nb_Functions) {
       for(k in 1:dim_Functions) {
+        
+        setTxtProgressBar(pb, ind2 + nb_Functions * dim_Functions * ind1)
+        
         ind2 = dim_Functions * (n-1) + k
         p1 = as.numeric(alpha[,p] %*% alpha[,n])
         p2 = as.numeric(f[ind1,] %*% f[ind2,])
@@ -180,6 +186,8 @@ for(p in 1:nb_Functions) {
   }
 }
 
+
+cat("[TERTIAIRE] Computing vector coefficient.\n")
 
 V = matrix(NA,nM,1)
 
@@ -193,6 +201,7 @@ for(p in 1:nb_Functions) {
   }
 }
 
+cat("[TERTIAIRE] Solving system.\n")
 
 Mp = solve(M)
 
