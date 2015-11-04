@@ -33,7 +33,7 @@ if(file.exists(SaveFileName))
   thermo_RSquare=array(NA,nb_HTA)
   
   
-  pdf(paste0(StatsOutFolder,"Thermo.pdf"))
+  openPDF(paste0(StatsOutFolder,"Thermo"))
   for(k in 1:nb_HTA)
   {
     name=names(conso_HTA_xts)[k]
@@ -61,7 +61,7 @@ if(file.exists(SaveFileName))
     thermo_Erreur[k] =erreur
     thermo_RSquare[k]=as.numeric(resume[8])
   }
-  dev.off()
+  closePDF()
   
   save(thermo_A,
        thermo_B,

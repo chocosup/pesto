@@ -87,7 +87,7 @@ myImagePlot <- function(x, ...){
 }
 
 
-pdf(paste0(StatsOutFolder,"Correlations_",year,".pdf"))
+openPDF(paste0(StatsOutFolder,"Correlations_",year))
 
 
 
@@ -173,7 +173,4 @@ Visuel<-myImagePlot(correlat,
                     yLabels=names(IndicateursINSEE)[-1][-1],
                     title="Correlation population / Sylvain")
 
-
-
-dev.off()
-
+closePDF()

@@ -160,29 +160,33 @@ for (i in 1:nb_Functions)
 }
 
 
+openPDF(paste0(StatsOutFolder,"BaseFunctions_",year))
+
 for (i in 1:nb_Functions) {
   plot(rawfp[i,1:nb_Indices_Day],
        main=colnames(alpha)[i],
        sub=paste("Mean: ", mean(rawfp[i,1:nb_Indices_Day])))
 }
 
+closePDF()
+
 
 # predictions par depart
 prediction = alpha %*% fp
 
 
-pdf(paste0(StatsOutFolder,"Simulation_",year,".pdf"))
+openPDF(paste0(StatsOutFolder,"Simulation_",year))
 
 day = 1
 range = (day-1) * nb_Indices_Day + (1:nb_Indices_Day)
 
 for (i in 1:172) {
-  plot(prediction[i,range], main=paste("Depart",i))
-  lines(y=as.array(C["2011-07-01",i]),x=range)
+  dat <- cbind( as.matrix(prediction[i,range]),
+                as.matrix(C["2011-07-01",i]) )
+  matplot(dat, type = c("l"),pch=1,col = 1:2,main=paste("Depart",i))
 }
 
-dev.off()
-
+closePDF()
 
 
 Cp <- t(as.matrix(C))
@@ -194,5 +198,9 @@ cat("Mean prediction:  ", mean(prediction), "\n")
 depart_Square_Erreur = sqrt(rowMeans( (prediction - Cp)^2 ))
 depart_Mean          = rowMeans(Cp)
 depart_pc_Erreur     = depart_Square_Erreur / depart_Mean
+
+
+
+
 
 

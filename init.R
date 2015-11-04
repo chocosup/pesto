@@ -116,3 +116,18 @@ cat("PS found:", length(PS_names),"\n")
 
 # All names HTA + PS
 All_names = c(HTA_names, PS_names)
+
+
+
+closePDF <- function() {
+  while (as.numeric(dev.cur()) != 1) {
+    dev.off()
+  }
+}
+
+openPDF <- function(name) {
+  name <- paste0(name, ".pdf")
+  closePDF()
+  pdf(name)
+}
+
