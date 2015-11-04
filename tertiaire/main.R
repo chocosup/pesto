@@ -203,9 +203,7 @@ for(p in 1:nb_Functions) {
 
 cat("[TERTIAIRE] Solving system.\n")
 
-Mp = solve(M)
-
-coeff = Mp %*% V
+coeff = solve(M,V)
 
 
 
