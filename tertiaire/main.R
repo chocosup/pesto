@@ -17,7 +17,8 @@ nb_Jours   = nb_Indices/nb_Indices_Day
 # ---------------------------------------------------------------------------
 #                        Define base functions here
 # ---------------------------------------------------------------------------
-x <- (1:nb_Indices_Day - (nb_Indices_Day+1)/2)
+x  <- (1:nb_Indices_Day - (nb_Indices_Day+1)/2)
+x_ <- (2*pi)*(0:(nb_Indices_Day-1))/(nb_Indices_Day-1)
 
 fbase <- function(exposant) {
   y = x^exposant
@@ -26,30 +27,79 @@ fbase <- function(exposant) {
   return(res)
 }
 
+fcosharmonique <- function(frequency) {
+  y = cos(frequency*x_)
+  return(y)
+}
 
-fbase0 = matrix(replicate(nb_Jours, x^0     ), 1, nb_Indices)
-fbase1 = matrix(replicate(nb_Jours, fbase(1)), 1, nb_Indices)
-fbase2 = matrix(replicate(nb_Jours, fbase(2)), 1, nb_Indices)
-fbase3 = matrix(replicate(nb_Jours, fbase(3)), 1, nb_Indices)
-fbase4 = matrix(replicate(nb_Jours, fbase(4)), 1, nb_Indices)
-fbase5 = matrix(replicate(nb_Jours, fbase(5)), 1, nb_Indices)
-fbase6 = matrix(replicate(nb_Jours, fbase(6)), 1, nb_Indices)
-fbase7 = matrix(replicate(nb_Jours, fbase(7)), 1, nb_Indices)
-fbase8 = matrix(replicate(nb_Jours, fbase(8)), 1, nb_Indices)
-fbase9 = matrix(replicate(nb_Jours, fbase(9)), 1, nb_Indices)
-# fbase10= matrix(replicate(nb_Jours, cos(2*x)  ), 1, nb_Indices)
-# fbase11= matrix(replicate(nb_Jours, sin(2*x)  ), 1, nb_Indices)
+fsinharmonique <- function(frequency) {
+  y = sin(frequency*x_)
+  return(y)
+}
+
+# fbase0 = matrix(replicate(nb_Jours, x^0     ), 1, nb_Indices)
+# fbase1 = matrix(replicate(nb_Jours, fbase(1)), 1, nb_Indices)
+# fbase2 = matrix(replicate(nb_Jours, fbase(2)), 1, nb_Indices)
+# fbase3 = matrix(replicate(nb_Jours, fbase(3)), 1, nb_Indices)
+# fbase4 = matrix(replicate(nb_Jours, fbase(4)), 1, nb_Indices)
+# fbase5 = matrix(replicate(nb_Jours, fbase(5)), 1, nb_Indices)
+# fbase6 = matrix(replicate(nb_Jours, fbase(6)), 1, nb_Indices)
+# fbase7 = matrix(replicate(nb_Jours, fbase(7)), 1, nb_Indices)
+# fbase8 = matrix(replicate(nb_Jours, fbase(8)), 1, nb_Indices)
+# fbase9 = matrix(replicate(nb_Jours, fbase(9)), 1, nb_Indices)
+
+fbase0     = matrix(replicate(nb_Jours, x^0     ), 1, nb_Indices)
+fbasecos1  = matrix(replicate(nb_Jours, fcosharmonique(1)), 1, nb_Indices)
+fbasesin1  = matrix(replicate(nb_Jours, fsinharmonique(1)), 1, nb_Indices)
+fbasecos2  = matrix(replicate(nb_Jours, fcosharmonique(2)), 1, nb_Indices)
+fbasesin2  = matrix(replicate(nb_Jours, fsinharmonique(2)), 1, nb_Indices)
+fbasecos3  = matrix(replicate(nb_Jours, fcosharmonique(3)), 1, nb_Indices)
+fbasesin3  = matrix(replicate(nb_Jours, fsinharmonique(3)), 1, nb_Indices)
+fbasecos4  = matrix(replicate(nb_Jours, fcosharmonique(4)), 1, nb_Indices)
+fbasesin4  = matrix(replicate(nb_Jours, fsinharmonique(4)), 1, nb_Indices)
+fbasecos5  = matrix(replicate(nb_Jours, fcosharmonique(5)), 1, nb_Indices)
+fbasesin5  = matrix(replicate(nb_Jours, fsinharmonique(5)), 1, nb_Indices)
+fbasecos6  = matrix(replicate(nb_Jours, fcosharmonique(6)), 1, nb_Indices)
+fbasesin6  = matrix(replicate(nb_Jours, fsinharmonique(6)), 1, nb_Indices)
+fbasecos7  = matrix(replicate(nb_Jours, fcosharmonique(7)), 1, nb_Indices)
+fbasesin7  = matrix(replicate(nb_Jours, fsinharmonique(7)), 1, nb_Indices)
+fbasecos8  = matrix(replicate(nb_Jours, fcosharmonique(8)), 1, nb_Indices)
+fbasesin8  = matrix(replicate(nb_Jours, fsinharmonique(8)), 1, nb_Indices)
+fbasecos9  = matrix(replicate(nb_Jours, fcosharmonique(9)), 1, nb_Indices)
+fbasesin9  = matrix(replicate(nb_Jours, fsinharmonique(9)), 1, nb_Indices)
+fbasecos10 = matrix(replicate(nb_Jours, fcosharmonique(10)), 1, nb_Indices)
+fbasesin10 = matrix(replicate(nb_Jours, fsinharmonique(10)), 1, nb_Indices)
+fbasecos11 = matrix(replicate(nb_Jours, fcosharmonique(11)), 1, nb_Indices)
+fbasesin11 = matrix(replicate(nb_Jours, fsinharmonique(11)), 1, nb_Indices)
+fbasecos12 = matrix(replicate(nb_Jours, fcosharmonique(12)), 1, nb_Indices)
+fbasesin12 = matrix(replicate(nb_Jours, fsinharmonique(12)), 1, nb_Indices)
+fbasecos13 = matrix(replicate(nb_Jours, fcosharmonique(13)), 1, nb_Indices)
+fbasesin13 = matrix(replicate(nb_Jours, fsinharmonique(13)), 1, nb_Indices)
+fbasecos14 = matrix(replicate(nb_Jours, fcosharmonique(14)), 1, nb_Indices)
+fbasesin14 = matrix(replicate(nb_Jours, fsinharmonique(14)), 1, nb_Indices)
+fbasecos15 = matrix(replicate(nb_Jours, fcosharmonique(15)), 1, nb_Indices)
+fbasesin15 = matrix(replicate(nb_Jours, fsinharmonique(15)), 1, nb_Indices)
+fbasecos16 = matrix(replicate(nb_Jours, fcosharmonique(16)), 1, nb_Indices)
+fbasesin16 = matrix(replicate(nb_Jours, fsinharmonique(16)), 1, nb_Indices)
+fbasecos17 = matrix(replicate(nb_Jours, fcosharmonique(17)), 1, nb_Indices)
+fbasesin17 = matrix(replicate(nb_Jours, fsinharmonique(17)), 1, nb_Indices)
+fbasecos18 = matrix(replicate(nb_Jours, fcosharmonique(18)), 1, nb_Indices)
+fbasesin18 = matrix(replicate(nb_Jours, fsinharmonique(18)), 1, nb_Indices)
+fbasecos19 = matrix(replicate(nb_Jours, fcosharmonique(19)), 1, nb_Indices)
+fbasesin19 = matrix(replicate(nb_Jours, fsinharmonique(19)), 1, nb_Indices)
+fbasecos20 = matrix(replicate(nb_Jours, fcosharmonique(20)), 1, nb_Indices)
+fbasesin20 = matrix(replicate(nb_Jours, fsinharmonique(20)), 1, nb_Indices)
 
 Std_func = list()
 Thermo_func = list()
 
-Std_func[[1]] = rbind(fbase0, fbase1, fbase2, fbase3, fbase4, fbase5, fbase6, fbase7, fbase8, fbase9)
-Std_func[[2]] = rbind(fbase0, fbase1, fbase2, fbase3, fbase4, fbase5, fbase6, fbase7, fbase8, fbase9)
-Std_func[[3]] = rbind(fbase0, fbase1, fbase2, fbase3, fbase4, fbase5, fbase6, fbase7, fbase8, fbase9)
-Std_func[[4]] = rbind(fbase0, fbase1, fbase2, fbase3, fbase4, fbase5, fbase6, fbase7, fbase8, fbase9)
+Std_func[[1]] = rbind(fbase0, fbasecos1, fbasesin1, fbasecos2, fbasesin2, fbasecos3, fbasesin3, fbasecos4, fbasesin4, fbasecos5, fbasesin5, fbasecos6, fbasesin6, fbasecos7, fbasesin7, fbasecos8, fbasesin8, fbasecos9, fbasesin9, fbasecos10, fbasesin10, fbasecos11, fbasesin11, fbasecos12, fbasesin12, fbasecos13, fbasesin13, fbasecos14, fbasesin14, fbasecos15, fbasesin15, fbasecos16, fbasesin16, fbasecos17, fbasesin17, fbasecos18, fbasesin18, fbasecos19, fbasesin19, fbasecos20, fbasesin20)
+Std_func[[2]] = rbind(fbase0, fbasecos1, fbasesin1, fbasecos2, fbasesin2, fbasecos3, fbasesin3, fbasecos4, fbasesin4, fbasecos5, fbasesin5, fbasecos6, fbasesin6, fbasecos7, fbasesin7, fbasecos8, fbasesin8, fbasecos9, fbasesin9, fbasecos10, fbasesin10, fbasecos11, fbasesin11, fbasecos12, fbasesin12, fbasecos13, fbasesin13, fbasecos14, fbasesin14, fbasecos15, fbasesin15, fbasecos16, fbasesin16, fbasecos17, fbasesin17, fbasecos18, fbasesin18, fbasecos19, fbasesin19, fbasecos20, fbasesin20)
+Std_func[[3]] = rbind(fbase0, fbasecos1, fbasesin1, fbasecos2, fbasesin2, fbasecos3, fbasesin3, fbasecos4, fbasesin4, fbasecos5, fbasesin5, fbasecos6, fbasesin6, fbasecos7, fbasesin7, fbasecos8, fbasesin8, fbasecos9, fbasesin9, fbasecos10, fbasesin10, fbasecos11, fbasesin11, fbasecos12, fbasesin12, fbasecos13, fbasesin13, fbasecos14, fbasesin14, fbasecos15, fbasesin15, fbasecos16, fbasesin16, fbasecos17, fbasesin17, fbasecos18, fbasesin18, fbasecos19, fbasesin19, fbasecos20, fbasesin20)
+Std_func[[4]] = rbind(fbase0, fbasecos1, fbasesin1, fbasecos2, fbasesin2, fbasecos3, fbasesin3, fbasecos4, fbasesin4, fbasecos5, fbasesin5, fbasecos6, fbasesin6, fbasecos7, fbasesin7, fbasecos8, fbasesin8, fbasecos9, fbasesin9, fbasecos10, fbasesin10, fbasecos11, fbasesin11, fbasecos12, fbasesin12, fbasecos13, fbasesin13, fbasecos14, fbasesin14, fbasecos15, fbasesin15, fbasecos16, fbasesin16, fbasecos17, fbasesin17, fbasecos18, fbasesin18, fbasecos19, fbasesin19, fbasecos20, fbasesin20)
 
-Thermo_func[[1]] = rbind(fbase0, fbase1, fbase2, fbase3, fbase4, fbase5, fbase6, fbase7, fbase8, fbase9)
-Thermo_func[[2]] = rbind(fbase0, fbase1, fbase2, fbase3, fbase4, fbase5, fbase6, fbase7, fbase8, fbase9)
+Thermo_func[[1]] = rbind(fbase0, fbasecos1, fbasesin1, fbasecos2, fbasesin2, fbasecos3, fbasesin3, fbasecos4, fbasesin4, fbasecos5, fbasesin5, fbasecos6, fbasesin6, fbasecos7, fbasesin7, fbasecos8, fbasesin8, fbasecos9, fbasesin9, fbasecos10, fbasesin10, fbasecos11, fbasesin11, fbasecos12, fbasesin12, fbasecos13, fbasesin13, fbasecos14, fbasesin14, fbasecos15, fbasesin15, fbasecos16, fbasesin16, fbasecos17, fbasesin17, fbasecos18, fbasesin18, fbasecos19, fbasesin19, fbasecos20, fbasesin20)
+Thermo_func[[2]] = rbind(fbase0, fbasecos1, fbasesin1, fbasecos2, fbasesin2, fbasecos3, fbasesin3, fbasecos4, fbasesin4, fbasecos5, fbasesin5, fbasecos6, fbasesin6, fbasecos7, fbasesin7, fbasecos8, fbasesin8, fbasecos9, fbasesin9, fbasecos10, fbasesin10, fbasecos11, fbasesin11, fbasecos12, fbasesin12, fbasecos13, fbasesin13, fbasecos14, fbasesin14, fbasecos15, fbasesin15, fbasecos16, fbasesin16, fbasecos17, fbasesin17, fbasecos18, fbasesin18, fbasecos19, fbasesin19, fbasecos20, fbasesin20)
 
 
 # ---------------------------------------------------------------------------
@@ -110,7 +160,7 @@ for (n in 1:nb_Thermo_Functions) {
 }
 
 
-alpha = cbind(Std_alpha, Thermo_alpha)
+alpha = cbind(Std_alpha, Thermo_alpha) / 1000
 
 
 
