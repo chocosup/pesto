@@ -163,8 +163,12 @@ for (i in 1:nb_Functions)
 
 openPDF(paste0(StatsOutFolder,"BaseFunctions_",year))
 
+range <- 1:nb_Indices_Day
 for (i in 1:nb_Functions) {
-  plot(rawfp[i,1:nb_Indices_Day],
+  par(lab=c(24,5,5))
+  plot(y=rawfp[i,range],
+       x=(range/6),
+       type="l",
        main=colnames(alpha)[i],
        sub=paste("Mean: ", mean(rawfp[i,1:nb_Indices_Day])))
 }
@@ -182,9 +186,10 @@ day = 1
 range = (day-1) * nb_Indices_Day + (1:nb_Indices_Day)
 
 for (i in 1:172) {
+  par(lab=c(24,5,5))
   dat <- cbind( as.matrix(prediction[i,range]),
                 as.matrix(C["2011-07-01",i]) )
-  matplot(dat, type = c("l"),pch=1,col = 1:2,main=paste("Depart",i))
+  matplot(y=dat,x=(range/6), type = c("l"),pch=1,col = 1:2,main=paste("Depart",i))
 }
 
 closePDF()
