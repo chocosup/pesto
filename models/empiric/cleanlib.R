@@ -4,16 +4,14 @@
 #              prise sur l'ensemble des j congrus à i modulo n          #
 #=======================================================================#
 
+
 selectmod = function(X,n)
 {
-  Y = vector("numeric",n)
-  Z = vector("logical",n)
-  for(i in 1:n) {
-    Z[] = FALSE
-    Z[i] = TRUE
-    Y[i] = mean(as.numeric(X)[Z])
-  }
-  return(Y)
+  X_ = as.numeric(X)
+  l = ceiling(length(X)/n)
+  Y = array(NA,l*n)
+  Y[1:length(X_)] = X_
+  return(rowMeans(matrix(Y,n,l), na.rm = TRUE))
 }
 
 
@@ -182,6 +180,12 @@ correct_plg = function(X,lb,ub,j)
     } else {
       # |_/
       
+      # On prolonge juste le modèle de droite
+      rsub = selectmod(X[ub[1]:ub[2]],144)
+      rsub = rev(rep(rev(rsub), length.out = bds[2]-bds[1]+1))
+      # Correction
+      out[bds[1]:bds[2]] = rsub
+      
     }
   } else if (is.null(ub)) {
     # On tronque la plage de gauche à j jours
@@ -195,6 +199,12 @@ correct_plg = function(X,lb,ub,j)
       err_code = 2
     } else {
       # \_|
+      
+      # On prolonge juste le modèle de gauche
+      lsub = rev(selectmod(rev(X[lb[1]:lb[2]]),144))
+      lsub = rep(lsub, length.out = bds[2]-bds[1]+1)
+      # Correction
+      out[bds[1]:bds[2]] = lsub
       
     }
   } else {
@@ -212,12 +222,32 @@ correct_plg = function(X,lb,ub,j)
       } else {
         # X_/
         
+        # Pas de modèle à gauche, on utilise un offset affine
         c1 = mean(X[lb[1]:lb[2]])
+        rsub = selectmod(X[ub[1]:ub[2]],144)
+        c2 = mean(rsub)
+        rsub = rsub - c2
+        rsub = rev(rep(rev(rsub), length.out = bds[2]-bds[1]+1))
+        # Création de l'offset
+        offset = seq(c1,c2, length.out = bds[2] - bds[1] + 3)[-c(1, bds[2] - bds[1] + 3)]
+        # Correction
+        out[bds[1]:bds[2]] = offset + rsub
+        
       }
     } else if (ub[2] - ub[1] < 143) {
       # \_X
       
-      c1 = mean(X[ub[1]:ub[2]])
+      # Pas de modèle à droite, on utilise un offset affine
+      c2 = mean(X[ub[1]:ub[2]])
+      lsub = rev(selectmod(rev(X[lb[1]:lb[2]]),144))
+      c1 = mean(lsub)
+      lsub = lsub - c1
+      lsub = rep(lsub, length.out = bds[2]-bds[1]+1)
+      # Création de l'offset
+      offset = seq(c1,c2, length.out = bds[2] - bds[1] + 3)[-c(1, bds[2] - bds[1] + 3)]
+      # Correction
+      out[bds[1]:bds[2]] = offset + lsub
+      
     } else
     {
       # \_/
@@ -227,7 +257,9 @@ correct_plg = function(X,lb,ub,j)
       rsub = rev(rep(rev(rsub), length.out = bds[2]-bds[1]+1))
       lsub = rev(selectmod(rev(X[lb[1]:lb[2]]),144))
       lsub = rep(lsub, length.out = bds[2]-bds[1]+1)
-      poids = seq(0,1, length.out = ub[1] - lb[2] + 1)[-c(1, ub[1] - lb[2])]
+      # On crée un vecteur pour les barycentres glissants
+      poids = seq(0,1, length.out = ub[1] - lb[2] + 1)[-c(1, bds[2] - bds[1] + 3)]
+      # On corrige la plage corrompue
       out[bds[1]:bds[2]] = (1-poids)*lsub + poids*rsub
     }
   }
@@ -254,11 +286,13 @@ correct = function(X,M,j)
   out = correct_plg(out,lbounds,ubounds,j)[[1]]
   
   # plages intermediaires
-  for (i in 2:(ncol(M)-1))
-  {
-    lbounds = ubounds
-    ubounds = c(M[2,i]+1, M[1,i+1]-1)
-    out = correct_plg(out,lbounds,ubounds,j)[[1]]
+  if(ncol(M) >= 3) {
+    for (i in 2:(ncol(M)-1))
+    {
+      lbounds = ubounds
+      ubounds = c(M[2,i]+1, M[1,i+1]-1)
+      out = correct_plg(out,lbounds,ubounds,j)[[1]]
+    }
   }
   
   # derniere plage
