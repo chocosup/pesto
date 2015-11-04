@@ -1,7 +1,11 @@
 cat("[TERTIAIRE] Starting.\n")
 
-start_Date="2011-01-01"
-end_Date="2011-12-31"
+#start_Date="2011-01-01"
+#end_Date="2011-12-31"
+
+start_Date="2011-07-01"
+end_Date="2011-08-31"
+
 
 period=paste0(start_Date,"/",end_Date)
 
@@ -226,6 +230,8 @@ for (i in 1:nb_Functions)
   rawfp[i,] = as.array(coeff[range] %*% rawf[range,])
 }
 
+cat("[TERTIAIRE] Plotting and saving.\n")
+
 
 openPDF(paste0(StatsOutFolder,"BaseFunctions_",year))
 
@@ -285,7 +291,9 @@ plot(sort(depart_Sylvain_Erreur), type="h")
 plot(depart_pc_Erreur, depart_Sylvain_Erreur)
 
 
-cat("RMSE    error: ", mean(depart_pc_Erreur), "\n",
+cat(" Start date:",start_Date,"\n",
+    "End   date:",end_Date,"\n",
+    "RMSE    error: ", mean(depart_pc_Erreur), "\n",
     "Sylvain error: ", mean(depart_Sylvain_Erreur), "\n",
     file=paste0(StatsOutFolder,"log_",year,".txt"))
 
