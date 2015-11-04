@@ -39,7 +39,7 @@ blocs_true <- function(X)
     }
     b = a
   }
-  if(a) { M[2,ncol] = length(x)}
+  if(a) { M[2,ncol] = length(x) }
   return(M)
 }
 
@@ -112,14 +112,23 @@ small_ranges <- function(M,n)
 normalise <- function(X,n,b)
 {
   d = n*144
-  lx = length(X[,1])
   R = X
+  lx = length(R[,1])
   nd = lx %/% d
   for (i in 1:nd)
   {
-    R[((i-1)*d + 1):(i*d),] = scale(R[((i-1)*d + 1):(i*d),], scale = b)
+    # if(sd(R[((i-1)*d + 1):(i*d),]) != 0)
+    # {
+      R[((i-1)*d + 1):(i*d),] = scale(R[((i-1)*d + 1):(i*d),], scale = b)
+    # }
   }
-  R[(nd*d):lx,] = scale(R[(nd*d):lx,], scale = b)
+  if(lx %% d != 0)
+  {
+    # if(sd(R[(nd*d):lx,]) != 0)
+    # {
+      R[(nd*d):lx,] = scale(R[(nd*d):lx,], scale = b)
+    # }
+  }
   
   return(R)
 }

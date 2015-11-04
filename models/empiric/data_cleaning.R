@@ -28,4 +28,12 @@ NewConsoMeas = ConsoMeasParDepart[,HTA_ok]
 pourcentages_zero = pourcentages_zero[,HTA_ok]
 
 ### HEURISTIQUE DE CORRECTION DES DONNÉES ###
-# heuristique = function(x) { return(x == 0) }
+# heuristique = function(X)
+# {
+#   Y = normalise(X,1,TRUE)
+#   Y = Y[abs(Y) > 4]
+#   Y[is.na(Y)] <- FALSE
+#   return(Y)
+# }
+
+# CorData = correct_framework(NewConsoMeas, 1:ncol(NewConsoMeas), heuristique, 5)
