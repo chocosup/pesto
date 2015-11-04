@@ -18,6 +18,10 @@ nb_Jours   = nb_Indices/nb_Indices_Day
 # ---------------------------------------------------------------------------
 #                        Define base functions here
 # ---------------------------------------------------------------------------
+Std_func = list()
+Thermo_func = list()
+
+
 x  <- (1:nb_Indices_Day - (nb_Indices_Day+1)/2)
 x_ <- (2*pi)*(0:(nb_Indices_Day-1))/(nb_Indices_Day-1)
 
@@ -49,25 +53,34 @@ fsinharmonique <- function(frequency) {
 # fbase8 = matrix(replicate(nb_Jours, fbase(8)), 1, nb_Indices)
 # fbase9 = matrix(replicate(nb_Jours, fbase(9)), 1, nb_Indices)
 
-fbase0     = matrix(replicate(nb_Jours, x^0     ), 1, nb_Indices)
-fbasecos1  = matrix(replicate(nb_Jours, fcosharmonique(1)), 1, nb_Indices)
-fbasesin1  = matrix(replicate(nb_Jours, fsinharmonique(1)), 1, nb_Indices)
-fbasecos2  = matrix(replicate(nb_Jours, fcosharmonique(2)), 1, nb_Indices)
-fbasesin2  = matrix(replicate(nb_Jours, fsinharmonique(2)), 1, nb_Indices)
-fbasecos3  = matrix(replicate(nb_Jours, fcosharmonique(3)), 1, nb_Indices)
-fbasesin3  = matrix(replicate(nb_Jours, fsinharmonique(3)), 1, nb_Indices)
-fbasecos4  = matrix(replicate(nb_Jours, fcosharmonique(4)), 1, nb_Indices)
-fbasesin4  = matrix(replicate(nb_Jours, fsinharmonique(4)), 1, nb_Indices)
-fbasecos5  = matrix(replicate(nb_Jours, fcosharmonique(5)), 1, nb_Indices)
-fbasesin5  = matrix(replicate(nb_Jours, fsinharmonique(5)), 1, nb_Indices)
-fbasecos6  = matrix(replicate(nb_Jours, fcosharmonique(6)), 1, nb_Indices)
-fbasesin6  = matrix(replicate(nb_Jours, fsinharmonique(6)), 1, nb_Indices)
-fbasecos7  = matrix(replicate(nb_Jours, fcosharmonique(7)), 1, nb_Indices)
-fbasesin7  = matrix(replicate(nb_Jours, fsinharmonique(7)), 1, nb_Indices)
-fbasecos8  = matrix(replicate(nb_Jours, fcosharmonique(8)), 1, nb_Indices)
-fbasesin8  = matrix(replicate(nb_Jours, fsinharmonique(8)), 1, nb_Indices)
-fbasecos9  = matrix(replicate(nb_Jours, fcosharmonique(9)), 1, nb_Indices)
-fbasesin9  = matrix(replicate(nb_Jours, fsinharmonique(9)), 1, nb_Indices)
+# Std_func[[1]] = rbind(fbase0, fbase1, fbase2, fbase3, fbase4, fbase5, fbase6, fbase7, fbase8, fbase9)
+# Std_func[[2]] = rbind(fbase0, fbase1, fbase2, fbase3, fbase4, fbase5, fbase6, fbase7, fbase8, fbase9)
+# Std_func[[3]] = rbind(fbase0, fbase1, fbase2, fbase3, fbase4, fbase5, fbase6, fbase7, fbase8, fbase9)
+# Std_func[[4]] = rbind(fbase0, fbase1, fbase2, fbase3, fbase4, fbase5, fbase6, fbase7, fbase8, fbase9)
+# Thermo_func[[1]] = rbind(fbase0, fbase1, fbase2, fbase3, fbase4, fbase5, fbase6, fbase7, fbase8, fbase9)
+# Thermo_func[[2]] = rbind(fbase0, fbase1, fbase2, fbase3, fbase4, fbase5, fbase6, fbase7, fbase8, fbase9)
+
+
+
+fbase0     = matrix(replicate(nb_Jours, x^0              ) , 1, nb_Indices)
+fbasecos1  = matrix(replicate(nb_Jours, fcosharmonique(1)) , 1, nb_Indices)
+fbasesin1  = matrix(replicate(nb_Jours, fsinharmonique(1)) , 1, nb_Indices)
+fbasecos2  = matrix(replicate(nb_Jours, fcosharmonique(2)) , 1, nb_Indices)
+fbasesin2  = matrix(replicate(nb_Jours, fsinharmonique(2)) , 1, nb_Indices)
+fbasecos3  = matrix(replicate(nb_Jours, fcosharmonique(3)) , 1, nb_Indices)
+fbasesin3  = matrix(replicate(nb_Jours, fsinharmonique(3)) , 1, nb_Indices)
+fbasecos4  = matrix(replicate(nb_Jours, fcosharmonique(4)) , 1, nb_Indices)
+fbasesin4  = matrix(replicate(nb_Jours, fsinharmonique(4)) , 1, nb_Indices)
+fbasecos5  = matrix(replicate(nb_Jours, fcosharmonique(5)) , 1, nb_Indices)
+fbasesin5  = matrix(replicate(nb_Jours, fsinharmonique(5)) , 1, nb_Indices)
+fbasecos6  = matrix(replicate(nb_Jours, fcosharmonique(6)) , 1, nb_Indices)
+fbasesin6  = matrix(replicate(nb_Jours, fsinharmonique(6)) , 1, nb_Indices)
+fbasecos7  = matrix(replicate(nb_Jours, fcosharmonique(7)) , 1, nb_Indices)
+fbasesin7  = matrix(replicate(nb_Jours, fsinharmonique(7)) , 1, nb_Indices)
+fbasecos8  = matrix(replicate(nb_Jours, fcosharmonique(8)) , 1, nb_Indices)
+fbasesin8  = matrix(replicate(nb_Jours, fsinharmonique(8)) , 1, nb_Indices)
+fbasecos9  = matrix(replicate(nb_Jours, fcosharmonique(9)) , 1, nb_Indices)
+fbasesin9  = matrix(replicate(nb_Jours, fsinharmonique(9)) , 1, nb_Indices)
 fbasecos10 = matrix(replicate(nb_Jours, fcosharmonique(10)), 1, nb_Indices)
 fbasesin10 = matrix(replicate(nb_Jours, fsinharmonique(10)), 1, nb_Indices)
 fbasecos11 = matrix(replicate(nb_Jours, fcosharmonique(11)), 1, nb_Indices)
@@ -91,14 +104,11 @@ fbasesin19 = matrix(replicate(nb_Jours, fsinharmonique(19)), 1, nb_Indices)
 fbasecos20 = matrix(replicate(nb_Jours, fcosharmonique(20)), 1, nb_Indices)
 fbasesin20 = matrix(replicate(nb_Jours, fsinharmonique(20)), 1, nb_Indices)
 
-Std_func = list()
-Thermo_func = list()
 
 Std_func[[1]] = rbind(fbase0, fbasecos1, fbasesin1, fbasecos2, fbasesin2, fbasecos3, fbasesin3, fbasecos4, fbasesin4, fbasecos5, fbasesin5, fbasecos6, fbasesin6, fbasecos7, fbasesin7, fbasecos8, fbasesin8, fbasecos9, fbasesin9, fbasecos10, fbasesin10, fbasecos11, fbasesin11, fbasecos12, fbasesin12, fbasecos13, fbasesin13, fbasecos14, fbasesin14, fbasecos15, fbasesin15, fbasecos16, fbasesin16, fbasecos17, fbasesin17, fbasecos18, fbasesin18, fbasecos19, fbasesin19, fbasecos20, fbasesin20)
 Std_func[[2]] = rbind(fbase0, fbasecos1, fbasesin1, fbasecos2, fbasesin2, fbasecos3, fbasesin3, fbasecos4, fbasesin4, fbasecos5, fbasesin5, fbasecos6, fbasesin6, fbasecos7, fbasesin7, fbasecos8, fbasesin8, fbasecos9, fbasesin9, fbasecos10, fbasesin10, fbasecos11, fbasesin11, fbasecos12, fbasesin12, fbasecos13, fbasesin13, fbasecos14, fbasesin14, fbasecos15, fbasesin15, fbasecos16, fbasesin16, fbasecos17, fbasesin17, fbasecos18, fbasesin18, fbasecos19, fbasesin19, fbasecos20, fbasesin20)
 Std_func[[3]] = rbind(fbase0, fbasecos1, fbasesin1, fbasecos2, fbasesin2, fbasecos3, fbasesin3, fbasecos4, fbasesin4, fbasecos5, fbasesin5, fbasecos6, fbasesin6, fbasecos7, fbasesin7, fbasecos8, fbasesin8, fbasecos9, fbasesin9, fbasecos10, fbasesin10, fbasecos11, fbasesin11, fbasecos12, fbasesin12, fbasecos13, fbasesin13, fbasecos14, fbasesin14, fbasecos15, fbasesin15, fbasecos16, fbasesin16, fbasecos17, fbasesin17, fbasecos18, fbasesin18, fbasecos19, fbasesin19, fbasecos20, fbasesin20)
 Std_func[[4]] = rbind(fbase0, fbasecos1, fbasesin1, fbasecos2, fbasesin2, fbasecos3, fbasesin3, fbasecos4, fbasesin4, fbasecos5, fbasesin5, fbasecos6, fbasesin6, fbasecos7, fbasesin7, fbasecos8, fbasesin8, fbasecos9, fbasesin9, fbasecos10, fbasesin10, fbasecos11, fbasesin11, fbasecos12, fbasesin12, fbasecos13, fbasesin13, fbasecos14, fbasesin14, fbasecos15, fbasesin15, fbasecos16, fbasesin16, fbasecos17, fbasesin17, fbasecos18, fbasesin18, fbasecos19, fbasesin19, fbasecos20, fbasesin20)
-
 Thermo_func[[1]] = rbind(fbase0, fbasecos1, fbasesin1, fbasecos2, fbasesin2, fbasecos3, fbasesin3, fbasecos4, fbasesin4, fbasecos5, fbasesin5, fbasecos6, fbasesin6, fbasecos7, fbasesin7, fbasecos8, fbasesin8, fbasecos9, fbasesin9, fbasecos10, fbasesin10, fbasecos11, fbasesin11, fbasecos12, fbasesin12, fbasecos13, fbasesin13, fbasecos14, fbasesin14, fbasecos15, fbasesin15, fbasecos16, fbasesin16, fbasecos17, fbasesin17, fbasecos18, fbasesin18, fbasecos19, fbasesin19, fbasecos20, fbasesin20)
 Thermo_func[[2]] = rbind(fbase0, fbasecos1, fbasesin1, fbasecos2, fbasesin2, fbasecos3, fbasesin3, fbasecos4, fbasesin4, fbasecos5, fbasesin5, fbasecos6, fbasesin6, fbasecos7, fbasesin7, fbasecos8, fbasesin8, fbasecos9, fbasesin9, fbasecos10, fbasesin10, fbasecos11, fbasesin11, fbasecos12, fbasesin12, fbasecos13, fbasesin13, fbasecos14, fbasesin14, fbasecos15, fbasesin15, fbasecos16, fbasesin16, fbasecos17, fbasesin17, fbasecos18, fbasesin18, fbasecos19, fbasesin19, fbasecos20, fbasesin20)
 
@@ -206,7 +216,6 @@ cat("[TERTIAIRE] Solving system.\n")
 coeff = solve(M,V)
 
 
-
 # profils de charge
 rawfp = matrix(NA,nb_Functions,nb_Indices)
 fp    = matrix(NA,nb_Functions,nb_Indices)
@@ -237,33 +246,47 @@ closePDF()
 prediction = alpha %*% fp
 
 
-openPDF(paste0(StatsOutFolder,"Simulation_",year))
 
-day = 1
-range = (day-1) * nb_Indices_Day + (1:nb_Indices_Day)
+as.character(as.Date(as.character(tIndices[length(tIndices) * 9 / 17])))
 
-for (i in 1:172) {
-  par(lab=c(24,5,5))
-  dat <- cbind( as.matrix(prediction[i,range]),
-                as.matrix(C["2011-07-01",i]) )
-  matplot(y=dat,x=(range/6), type = c("l"),pch=1,col = 1:2,main=paste("Depart",i))
+nb_sample = 10
+for (i in 1:nb_sample) {
+  day = floor((i * nb_Jours) / (nb_sample + 1))
+  str_date = as.character(as.Date(start_Date) + day)
+  
+  
+  openPDF(paste0(StatsOutFolder,"Simulation_",str_date))
+  
+  day = 1
+  range = (day-1) * nb_Indices_Day + (1:nb_Indices_Day)
+  
+  for (i in 1:172) {
+    par(lab=c(24,5,5))
+    dat <- cbind( as.matrix(prediction[i,range]),
+                  as.matrix(C["2011-07-01",i]) )
+    matplot(y=dat,x=(range/6), type = c("l"),pch=1,col = 1:2,main=paste("Depart",i))
+  }
+  
+  closePDF()
 }
 
-closePDF()
 
 
 Cp <- t(as.matrix(C))
 
-cat("Mean consumption: ", mean(Cp)        , "\n")
-cat("Mean prediction:  ", mean(prediction), "\n")
-
 
 depart_Square_Erreur = sqrt(rowMeans( (prediction - Cp)^2 ))
-depart_Mean          = rowMeans(Cp)
+depart_Mean          = rowMeans( abs(Cp) )
 depart_pc_Erreur     = depart_Square_Erreur / depart_Mean
+depart_Sylvain_Erreur = rowMeans( abs(prediction - Cp) / prediction )
+
+plot(sort(depart_pc_Erreur), type="h")
+plot(sort(depart_Sylvain_Erreur), type="h")
+plot(depart_pc_Erreur, depart_Sylvain_Erreur)
 
 
-
-
+cat("RMSE    error: ", mean(depart_pc_Erreur), "\n",
+    "Sylvain error: ", mean(depart_Sylvain_Erreur), "\n",
+    file=paste0(StatsOutFolder,"log_",year,".txt"))
 
 
