@@ -3,8 +3,11 @@ cat("[TERTIAIRE] Starting.\n")
 #start_Date="2011-01-01"
 #end_Date="2011-12-31"
 
-start_Date="2011-07-01"
-end_Date="2011-08-31"
+start_Date="2011-01-01"
+end_Date="2011-04-31"
+
+# start_Date="2011-01-01"
+# end_Date="2011-03-31"
 
 
 period=paste0(start_Date,"/",end_Date)
@@ -64,7 +67,7 @@ fsinharmonique <- function(frequency) {
 # fbase7 = matrix(replicate(nb_Jours, fbase(7)), 1, nb_Indices)
 # fbase8 = matrix(replicate(nb_Jours, fbase(8)), 1, nb_Indices)
 # fbase9 = matrix(replicate(nb_Jours, fbase(9)), 1, nb_Indices)
-
+# 
 # Std_func[[1]] = rbind(fbase0, fbase1, fbase2, fbase3, fbase4, fbase5, fbase6, fbase7, fbase8, fbase9)
 # Std_func[[2]] = rbind(fbase0, fbase1, fbase2, fbase3, fbase4, fbase5, fbase6, fbase7, fbase8, fbase9)
 # Std_func[[3]] = rbind(fbase0, fbase1, fbase2, fbase3, fbase4, fbase5, fbase6, fbase7, fbase8, fbase9)
@@ -235,6 +238,7 @@ for (iter in 1:length(leaveoneout_HTA)) {
     }
   }
   
+  
   cat("[TERTIAIRE] Solving system.\n")
   
   coeff = solve(M,V)
@@ -311,6 +315,7 @@ for (iter in 1:length(leaveoneout_HTA)) {
   }
 }
 
+
 Cp <- t(as.matrix(C))
 
 if (!do_leaveoneout) {
@@ -330,5 +335,6 @@ if (!do_leaveoneout) {
       "Sylvain error: ", mean(depart_Sylvain_Erreur), "\n",
       file=paste0(StatsOutFolder,"log_",year,".txt"))
 }
+
 
 
