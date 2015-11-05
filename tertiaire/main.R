@@ -134,6 +134,10 @@ Thermo_func[[2]] = rbind(fbase0, fbasecos1, fbasesin1, fbasecos2, fbasesin2, fba
 
 S = souscrit_par_offre[1:length(HTA_names),]
 
+# S = conso_par_offre[1:length(HTA_names),] * replicate()
+
+
+
 Std_alpha = as.matrix(data.frame(
   residentiel = (S$`bleu domestique`),
   agricole    = (S$`bleu agricole` + S$`jaune agricole`),
@@ -280,29 +284,30 @@ for (iter in 1:length(leaveoneout_HTA)) {
   }
   
   
+  nb_jours_sample = 7
   nb_sample = 10
   for (i in 1:nb_sample) {
-    day = floor((i * nb_Jours) / (nb_sample + 1))
+    day = floor((i * (nb_Jours-nb_jours_sample)) / (nb_sample + 1))
     str_date = as.character(as.Date(start_Date) + day)
     
     
     openPDF(paste0(StatsOutFolder,"Simulation_",str_date))
     
     day = 1
-    range = (day-1) * nb_Indices_Day + (1:nb_Indices_Day)
+    range = (day-1) * nb_Indices_Day + (1:(nb_jours_sample*nb_Indices_Day))
     
     if (do_leaveoneout) {
       for (i in 1:length(leaveoneout_HTA)) {
         par(lab=c(24,5,5))
         dat <- cbind( as.matrix(prediction[i,range]),
-                      as.matrix(Cg["2011-07-01",leaveoneout_HTA[i]]) )
+                      as.matrix(Cg[range,leaveoneout_HTA[i]]) )
         matplot(y=dat,x=(range/6), type = c("l"),pch=1,col = 1:2,main=paste("Depart",leaveoneout_HTA[i]))
       }
     } else {
-      for (i in 1:172) {
+      for (i in 1:length(HTA_names)) {
         par(lab=c(24,5,5))
         dat <- cbind( as.matrix(prediction[i,range]),
-                      as.matrix(C["2011-07-01",i]) )
+                      as.matrix(C[range,i]) )
         matplot(y=dat,x=(range/6), type = c("l"),pch=1,col = 1:2,main=paste("Depart",i))
       }
     }
