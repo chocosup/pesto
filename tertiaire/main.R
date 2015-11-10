@@ -12,15 +12,23 @@ end_Date="2011-04-31"
 
 period=paste0(start_Date,"/",end_Date)
 
-C = ConsoMeasParDepart[period,HTA_names]
+Cg = ConsoMeasParDepart[period,HTA_names]
 
-tIndices = time(C)
+tIndices = time(Cg)
 
 nb_Indices = length(tIndices)
 nb_Indices_Day = 24 * 6
 nb_Jours   = nb_Indices/nb_Indices_Day
 
+do_leaveoneout = FALSE
+leaveoneout_HTA = c(1,18)
 
+
+if (!do_leaveoneout) {
+  leaveoneout_HTA = 0
+} else {
+  prediction = matrix(NA, length(leaveoneout_HTA), nb_Indices)
+}
 
 # ---------------------------------------------------------------------------
 #                        Define base functions here
@@ -126,6 +134,10 @@ Thermo_func[[2]] = rbind(fbase0, fbasecos1, fbasesin1, fbasecos2, fbasesin2, fba
 
 S = souscrit_par_offre[1:length(HTA_names),]
 
+# S = conso_par_offre[1:length(HTA_names),] * replicate()
+
+
+
 Std_alpha = as.matrix(data.frame(
   residentiel = (S$`bleu domestique`),
   agricole    = (S$`bleu agricole` + S$`jaune agricole`),
@@ -178,122 +190,155 @@ for (n in 1:nb_Thermo_Functions) {
 }
 
 
-alpha = cbind(Std_alpha, Thermo_alpha) / 1000
+alphaG = cbind(Std_alpha, Thermo_alpha) / 1000
 
-
-cat("[TERTIAIRE] Computing matrix coefficient.\n")
-
-M = matrix(NA,nM,nM)
-
-pb <- txtProgressBar(min=1, max=nb_Functions*nb_Functions*dim_Functions*dim_Functions, style=3)
-
-for(p in 1:nb_Functions) {
-  for(l in 1:dim_Functions) {
-    ind1 = dim_Functions * (p-1) + l
-    for(n in 1:nb_Functions) {
-      for(k in 1:dim_Functions) {
-        ind2 = dim_Functions * (n-1) + k
-        
-        setTxtProgressBar(pb, ind2 + nb_Functions * dim_Functions * ind1)
-        
-        p1 = as.numeric(alpha[,p] %*% alpha[,n])
-        p2 = as.numeric(f[ind1,] %*% f[ind2,])
-        M[ind1,ind2] = p1  * p2
+for (iter in 1:length(leaveoneout_HTA)) {
+  
+  pbIter <- txtProgressBar(min=0, max=length(leaveoneout_HTA), style=3)
+  setTxtProgressBar(pbIter, 0)
+  
+  if (do_leaveoneout) {
+    alpha = alphaG[-leaveoneout_HTA[iter],]
+    C= Cg[,-leaveoneout_HTA[iter]]
+  } else {
+    alpha = alphaG
+    C = Cg
+  }
+  
+  cat("[TERTIAIRE] Computing matrix coefficient.\n")
+  M = matrix(NA,nM,nM)
+  
+  pb <- txtProgressBar(min=1, max=nb_Functions*nb_Functions*dim_Functions*dim_Functions, style=3)
+  
+  for(p in 1:nb_Functions) {
+    for(l in 1:dim_Functions) {
+      ind1 = dim_Functions * (p-1) + l
+      for(n in 1:nb_Functions) {
+        for(k in 1:dim_Functions) {
+          
+          setTxtProgressBar(pb, ind2 + nb_Functions * dim_Functions * ind1)
+          
+          ind2 = dim_Functions * (n-1) + k
+          p1 = as.numeric(alpha[,p] %*% alpha[,n])
+          p2 = as.numeric(f[ind1,] %*% f[ind2,])
+          M[ind1,ind2] = p1  * p2
+        }
       }
     }
   }
-}
-
-
-cat("\n[TERTIAIRE] Computing vector coefficient.\n")
-
-V = matrix(NA,nM,1)
-
-for(p in 1:nb_Functions) {
-  for(l in 1:dim_Functions) {
-    ind = dim_Functions * (p-1) + l
+  
+  
+  cat("[TERTIAIRE] Computing vector coefficient.\n")
+  
+  V = matrix(NA,nM,1)
+  
+  for(p in 1:nb_Functions) {
+    for(l in 1:dim_Functions) {
+      ind = dim_Functions * (p-1) + l
+      
+      aux1 = C %*% alpha[,p]
+      
+      V[ind,1] = matrix(f[ind,],1,nb_Indices) %*% aux1
+    }
+  }
+  
+  
+  cat("[TERTIAIRE] Solving system.\n")
+  
+  coeff = solve(M,V)
+  
+  
+  # profils de charge
+  rawfp = matrix(NA,nb_Functions,nb_Indices)
+  fp    = matrix(NA,nb_Functions,nb_Indices)
+  for (i in 1:nb_Functions)
+  {
+    range = dim_Functions*(i-1) + (1:dim_Functions)
+    fp[i,] = as.array(coeff[range] %*%    f[range,])
+    rawfp[i,] = as.array(coeff[range] %*% rawf[range,])
+  }
+  
+  cat("[TERTIAIRE] Plotting and saving.\n")
+  
+  if (!do_leaveoneout) {
+    openPDF(paste0(StatsOutFolder,"BaseFunctions_",year))
     
-    aux1 = C %*% alpha[,p]
+    range <- 1:nb_Indices_Day
+    for (i in 1:nb_Functions) {
+      par(lab=c(24,5,5))
+      plot(y=rawfp[i,range],
+           x=(range/6),
+           type="l",
+           main=colnames(alpha)[i],
+           sub=paste("Mean: ", mean(rawfp[i,1:nb_Indices_Day])))
+    }
     
-    V[ind,1] = matrix(f[ind,],1,nb_Indices) %*% aux1
+    closePDF()
+  }
+  
+  # predictions par depart
+  if (do_leaveoneout) {
+    prediction[iter,] <- alpha[leaveoneout_HTA[iter],] %*% fp
+  }else {
+    prediction = alpha %*% fp
+  }
+  
+  
+  nb_jours_sample = 7
+  nb_sample = 10
+  for (i in 1:nb_sample) {
+    day = floor((i * (nb_Jours-nb_jours_sample)) / (nb_sample + 1))
+    str_date = as.character(as.Date(start_Date) + day)
+    
+    
+    openPDF(paste0(StatsOutFolder,"Simulation_",str_date))
+    
+    day = 1
+    range = (day-1) * nb_Indices_Day + (1:(nb_jours_sample*nb_Indices_Day))
+    
+    if (do_leaveoneout) {
+      for (i in 1:length(leaveoneout_HTA)) {
+        par(lab=c(24,5,5))
+        dat <- cbind( as.matrix(prediction[i,range]),
+                      as.matrix(Cg[range,leaveoneout_HTA[i]]) )
+        matplot(y=dat,x=(range/6), type = c("l"),pch=1,col = 1:2,main=paste("Depart",leaveoneout_HTA[i]))
+      }
+    } else {
+      for (i in 1:length(HTA_names)) {
+        par(lab=c(24,5,5))
+        dat <- cbind( as.matrix(prediction[i,range]),
+                      as.matrix(C[range,i]) )
+        matplot(y=dat,x=(range/6), type = c("l"),pch=1,col = 1:2,main=paste("Depart",i))
+      }
+    }
+    
+    
+    closePDF()
+  }
+  if (length(leaveoneout_HTA)>1) {
+    setTxtProgressBar(pbIter, iter)
   }
 }
 
-cat("[TERTIAIRE] Solving system.\n")
-
-coeff = solve(M,V)
-
-
-# profils de charge
-rawfp = matrix(NA,nb_Functions,nb_Indices)
-fp    = matrix(NA,nb_Functions,nb_Indices)
-for (i in 1:nb_Functions)
-{
-  range = dim_Functions*(i-1) + (1:dim_Functions)
-     fp[i,] = as.array(coeff[range] %*%    f[range,])
-  rawfp[i,] = as.array(coeff[range] %*% rawf[range,])
-}
 
 Cp <- t(as.matrix(C))
 
-# predictions par depart
-prediction = alpha %*% fp
-
-depart_Square_Erreur = sqrt(rowMeans( (prediction - Cp)^2 ))
-depart_Mean          = rowMeans( abs(Cp) )
-depart_pc_Erreur     = depart_Square_Erreur / mean(depart_Mean)
-depart_Sylvain_Erreur = rowMeans( abs(prediction - Cp) / prediction )
-
-plot(sort(depart_pc_Erreur), type="h")
-plot(sort(depart_Sylvain_Erreur), type="h")
-plot(depart_pc_Erreur, depart_Sylvain_Erreur)
-
-
-msg = paste0(" Start date: ",start_Date,"\n",
-             "End   date: ",end_Date,"\n",
-             "RMSE    error: ", mean(depart_pc_Erreur), "\n",
-             "Sylvain error: ", mean(depart_Sylvain_Erreur), "\n")
-cat(msg)
-cat(msg,file=paste0(StatsOutFolder,"log_",year,".txt"))
-
-
-cat("[TERTIAIRE] Plotting and saving.\n")
-
-
-openPDF(paste0(StatsOutFolder,"BaseFunctions_",year))
-
-range <- 1:nb_Indices_Day
-for (i in 1:nb_Functions) {
-  par(lab=c(24,5,5))
-  plot(y=rawfp[i,range],
-       x=(range/6),
-       type="l",
-       main=colnames(alpha)[i],
-       sub=paste("Mean: ", mean(rawfp[i,1:nb_Indices_Day])))
-}
-
-closePDF()
-
-
-nb_sample = 10
-for (i in 1:nb_sample) {
-  day = floor((i * nb_Jours) / (nb_sample + 1))
-  str_date = as.character(as.Date(start_Date) + day)
+if (!do_leaveoneout) {
+  depart_Square_Erreur = sqrt(rowMeans( (prediction - Cp)^2 ))
+  depart_Mean          = rowMeans( abs(Cp) )
+  depart_pc_Erreur     = depart_Square_Erreur / depart_Mean
+  depart_Sylvain_Erreur = rowMeans( abs(prediction - Cp) / prediction )
+  
+  plot(sort(depart_pc_Erreur), type="h")
+  plot(sort(depart_Sylvain_Erreur), type="h")
+  plot(depart_pc_Erreur, depart_Sylvain_Erreur)
   
   
-  openPDF(paste0(StatsOutFolder,"Simulation_",str_date))
-  
-  day = 1
-  range = (day-1) * nb_Indices_Day + (1:nb_Indices_Day)
-  
-  for (i in 1:172) {
-    par(lab=c(24,5,5))
-    dat <- cbind( as.matrix(prediction[i,range]),
-                  as.matrix(C["2011-07-01",i]) )
-    matplot(y=dat,x=(range/6), type = c("l"),pch=1,col = 1:2,main=paste("Depart",i))
-  }
-  
-  closePDF()
+  cat(" Start date:",start_Date,"\n",
+      "End   date:",end_Date,"\n",
+      "RMSE    error: ", mean(depart_pc_Erreur), "\n",
+      "Sylvain error: ", mean(depart_Sylvain_Erreur), "\n",
+      file=paste0(StatsOutFolder,"log_",year,".txt"))
 }
 
 
